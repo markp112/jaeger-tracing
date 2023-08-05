@@ -1,12 +1,31 @@
-FROM node:20-slim AS base
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app/dist
+FROM node as builder
 
-COPY package*.json /usr/src/app
-RUN npm install 
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package*.json ./
+
+RUN npm ci
+
 COPY . .
-RUN tsc
+
 RUN npm run build
+
+FROM node:slim
+
+ENV NODE_ENV production
+USER node
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package*.json ./
+
+RUN npm ci --production
+
+COPY --from=builder /usr/src/app/dist ./dist
 
 EXPOSE 3000
 RUN npx prisma generate
