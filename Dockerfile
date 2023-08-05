@@ -25,7 +25,7 @@ WORKDIR /usr/src/app
 # Install app dependencies
 COPY package*.json ./
 
-RUN npm ci --production
+RUN npm install
 
 COPY --from=builder /usr/src/app/dist ./dist
 
