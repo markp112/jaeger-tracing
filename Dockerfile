@@ -1,4 +1,5 @@
 FROM node:slim
+RUN apt-get update -y && apt-get install -y openssl
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -17,4 +18,4 @@ RUN npm run build
 
 EXPOSE 3000
 RUN npx prisma generate
-CMD [ "node", "dist/server.js" ]
+CMD [ "node", "dist/src/server.js" ]
