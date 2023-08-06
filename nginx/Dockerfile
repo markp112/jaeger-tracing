@@ -19,8 +19,8 @@ RUN touch error.log
 WORKDIR /var/opt/rh/rh-nginx112/run/nginx
 RUN echo 1 >> nginx.pid
 
-RUN  chgrp -R root /var/opt/rh/rh-nginx112/log/nginx/access.log /var/opt/rh/rh-nginx112/log/nginx/error.log  && \
-    chmod -R 770 /var/opt/rh/rh-nginx112/log/nginx/access.log /var/opt/rh/rh-nginx112/log/nginx/error.log
+RUN  chgrp -R root /var/opt/rh/rh-nginx112/log/nginx/access.log /var/opt/rh/rh-nginx112/log/nginx/error.log /var/opt/rh/rh-nginx112/run/nginx && \
+    chmod -R 770 /var/opt/rh/rh-nginx112/log/nginx/access.log /var/opt/rh/rh-nginx112/log/nginx/error.log  /var/opt/rh/rh-nginx112/run/nginx
 
 EXPOSE 8080:8080
 CMD ["nginx", "-g", "daemon off;"]
