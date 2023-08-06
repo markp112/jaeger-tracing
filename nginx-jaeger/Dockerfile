@@ -1,6 +1,8 @@
 FROM nginx:1.17
 
-RUN apt-get install nginx-plus-module-opentracing
+WORKDIR /usr/local/lib
+
+RUN apt-get install https://github.com/jaegertracing/jaeger-client-cpp/releases/download/v0.4.2/libjaegertracing_plugin.linux_amd64.so -O /usr/local/lib/libjaegertracing_plugin.so
 
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./nginx/mime.types /etc/opt/rh/rh-nginx112/nginx/mime.types
