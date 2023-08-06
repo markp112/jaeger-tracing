@@ -1,7 +1,7 @@
 FROM nginx:1.23.1
 
 # Replace the nginx.conf file with our own
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx-jaeger/nginx.conf /etc/nginx/nginx.conf
 
 # Define the version of the NGINX OTel module
 ARG OPENTELEMETRY_CPP_VERSION=1.0.3
