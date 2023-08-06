@@ -1,4 +1,4 @@
-FROM --platform=amd64 nginx:1.23.1
+FROM nginx:1.23.1
 
 # Replace the nginx.conf file with our own
 COPY nginx.conf /etc/nginx/nginx.conf
