@@ -22,7 +22,7 @@ RUN apt-get update \
   && echo "load_module /opt/opentelemetry-webserver-sdk/WebServerModule/Nginx/1.23.1/ngx_http_opentelemetry_module.so;\n$(cat /etc/nginx/nginx.conf)" > /etc/nginx/nginx.conf
 
 # 4. Copy in the configuration file for the NGINX OTel module
-COPY opentelemetry_module.conf /etc/nginx/conf.d/opentelemetry_module.conf
+COPY ./nginx-jaeger/opentelemetry_module.conf /etc/nginx/conf.d/opentelemetry_module.conf
 
 EXPOSE 8085
 
