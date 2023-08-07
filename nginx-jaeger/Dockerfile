@@ -47,5 +47,5 @@ RUN  chgrp -R root /var/opt/rh/rh-nginx112/log/nginx/access.log /var/opt/rh/rh-n
 
 
 EXPOSE 8085
-
+CMD ["nginx", "-g", "daemon off;"]
 STOPSIGNAL SIGQUIT
