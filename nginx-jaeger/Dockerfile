@@ -26,8 +26,8 @@ COPY ./nginx-jaeger/opentelemetry_module.conf /etc/nginx/conf.d/opentelemetry_mo
 
 COPY ./nginx/mime.types /etc/opt/rh/rh-nginx112/nginx/mime.types
 
-RUN chgrp -R root /var/cache/nginx /var/run /var/log/nginx /var/opt /etc/nginx/conf.d/default.conf  && \
-    chmod -R 770 /var/cache/nginx /var/run /var/log/nginx /var/opt /etc/nginx/conf.d/default.conf 
+RUN chgrp -R root /var/cache/nginx /var/run /var/log/nginx /var/opt && \
+    chmod -R 770 /var/cache/nginx /var/run /var/log/nginx /var/opt
 
 RUN mkdir -p /var/opt/rh/rh-nginx112/log/nginx
 RUN mkdir -p /var/opt/rh/rh-nginx112/run/nginx
@@ -47,6 +47,5 @@ RUN  chgrp -R root /var/opt/rh/rh-nginx112/log/nginx/access.log /var/opt/rh/rh-n
 
 
 EXPOSE 8085
-
-
+# CMD ["nginx", "-g", "daemon off;"]
 STOPSIGNAL SIGQUIT
