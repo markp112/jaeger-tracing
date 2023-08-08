@@ -6,3 +6,6 @@ RUN cd /opt/opentelemetry-webserver-sdk; ./install.sh
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/opentelemetry-webserver-sdk/sdk_lib/lib
 RUN echo "load_module /opt/opentelemetry-webserver-sdk/WebServerModule/Nginx/ngx_http_opentelemetry_module.so;\n$(cat /etc/nginx/nginx.conf)" > /etc/nginx/nginx.conf
 COPY ./open-tel-nginx/opentelemetry_module.conf /etc/nginx/conf.d
+
+RUN chgrp -R root /var/cache/nginx/client_temp && \
+    chmod -R 770 /var/cache/nginx/client_temp
