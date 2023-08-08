@@ -8,6 +8,7 @@ RUN echo "load_module /opt/opentelemetry-webserver-sdk/WebServerModule/Nginx/ngx
 COPY ./open-tel-nginx/opentelemetry_module.conf /etc/nginx/conf.d
 
 RUN mkdir -p /var/cache/nginx/client_temp
+RUN mkdir /var/cache/nginx/proxy_temp
 
-RUN chgrp -R root /var/cache/nginx/client_temp && \
-    chmod -R 770 /var/cache/nginx/client_temp
+RUN chgrp -R root /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp && \
+    chmod -R 770 /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp
