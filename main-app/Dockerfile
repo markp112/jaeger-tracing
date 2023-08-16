@@ -5,13 +5,13 @@ RUN apt-get update -y && apt-get install -y openssl
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package*.json ./
+COPY main-app/package*.json ./
 
 RUN npm install
 
 RUN npm ci
 
-COPY . .
+COPY main-app/. .
 
 RUN npm run build
 
