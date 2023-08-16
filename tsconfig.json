@@ -7,8 +7,8 @@
     "removeComments": true,
     "sourceMap": true,
     "outDir": "dist",
-    "rootDir": "src",
-    "baseUrl": "src",
+    "rootDir": "./src",
+    "baseUrl": "./src",
     "paths": {
       "@api/*": ["api/*"],
       "@database/*": ["database/*"],
@@ -16,7 +16,12 @@
       "@repository/*": ["core/repository/*"],
       "@model/*": ["core/model/*"],
       "@core/*": ["core/*"]
-    }
+    },
+    "plugins": [
+      {
+        "before": ["tsconfig-paths/register"]
+      }
+    ]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"],

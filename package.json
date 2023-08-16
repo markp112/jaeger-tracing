@@ -21,18 +21,19 @@
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/server.ts",
-    "build": "tsc"
+    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.17",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
-    "@types/express": "^4.17.17",
     "eslint": "^8.46.0",
     "nodemon": "^3.0.1",
     "tsconfig-paths": "^4.2.0",
+    "tscpaths": "^0.0.9",
     "tspath": "^2.6.8",
     "typescript": "^5.1.6"
   },

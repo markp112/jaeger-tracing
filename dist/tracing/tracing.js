@@ -40,7 +40,6 @@ function initializeTracing(serviceName, environment) {
     });
     provider.register();
     return api_1.trace.getTracer(serviceName);
-    // return provider.getTracer(serviceName);
 }
 exports.initializeTracing = initializeTracing;
 //# sourceMappingURL=tracing.js.map
