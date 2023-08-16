@@ -3,6 +3,7 @@ const tracer = initializeTracing('node-app', 'development');
 import express, { Request, Response }  from 'express';
 import { logger } from './logger/logger'; 
 import { PrismaClient } from '@prisma/client';
+import { authRouter } from './api/auth/auth';
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.get('/', (req, res) => {
   logger.info('app running');
   res.send('Hello World!');
 });
+
+app.use(authRouter);
 
 app.get('/users/random', async (_req: Request, res: Response) => {
   logger.info('/users/random - called');

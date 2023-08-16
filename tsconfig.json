@@ -4,8 +4,21 @@
     "esModuleInterop": true,
     "target": "es6",
     "moduleResolution": "node",
+    "removeComments": true,
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": "src",
+    "paths": {
+      "@api/*": ["api/*"],
+      "@database/*": ["database/*"],
+      "@logger/*": ["logger/*"],
+      "@repository/*": ["core/repository/*"],
+      "@model/*": ["core/model/*"],
+      "@core/*": ["core/*"]
+    }
   },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
   "lib": ["es2015"]
 }

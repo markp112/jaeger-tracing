@@ -62,3 +62,7 @@ ENV NGINX_VERSION 1.17.10
 COPY --from=builder /usr/local/lib /usr/local/lib
 COPY --from=builder /usr/src/nginx-${NGINX_VERSION}/objs/*_module.so /etc/nginx/modules/
 RUN apk add libc6-compat libstdc++
+
+RUN  chgrp -R root /var/cache/nginx && \
+    chmod -R 770 /var/cache/nginx
+  
