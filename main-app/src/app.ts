@@ -3,14 +3,17 @@ const tracer = initializeTracing('main-app', 'test');
 
 import express, { Request, Response }  from 'express';
 import { logger } from './logger/logger';
-// import pino from 'pino-http';
+import pino from 'pino-http';
 import { PrismaClient } from '@prisma/client';
 import { authRouter } from './api/auth/auth';
+import bodyParser from 'body-parser';
 
 const app = express();
-// app.use(pino);
+app.use(pino);
 
 const prisma = new PrismaClient({});
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.status(200).send('Hello World!');
