@@ -1,18 +1,19 @@
 import { initializeTracing } from './tracing/tracing';
-const tracer = initializeTracing('main-app', 'development');
+const tracer = initializeTracing('main-app', 'test');
+
 import express, { Request, Response }  from 'express';
 import { logger } from './logger/logger';
-import pino from 'pino-http';
+// import pino from 'pino-http';
 import { PrismaClient } from '@prisma/client';
 import { authRouter } from './api/auth/auth';
 
 const app = express();
-app.use(pino);
+// app.use(pino);
 
 const prisma = new PrismaClient({});
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.status(200).send('Hello World!');
 });
 
 app.use(authRouter);

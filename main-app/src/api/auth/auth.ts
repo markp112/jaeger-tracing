@@ -1,6 +1,6 @@
 
 // import { tracer } from '../../tracing';
-import express, {Request, Response} from 'express';
+import express, { Request, Response } from 'express';
 import { logger } from '../../logger/logger';
 import { AuthRepository } from '@core/repository/auth/auth.repository';
 import { AuthService } from '@core/service/auth/auth.service';
@@ -14,7 +14,7 @@ const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 
 authRouter.post(getPath('login'), async (req: Request, res: Response) => {
   logger.child({name: 'Auth'});
-  req.log.info('login called');
+  // req.log.info('login called');
   // await tracer.startActiveSpan('Post auth/login', async (requestSpan) => {
     try {
       const bodyData = req.body;
