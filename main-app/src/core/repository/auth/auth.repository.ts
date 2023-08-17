@@ -24,10 +24,10 @@ class AuthRepository implements Authentication {
     try {
       logger.info(this.axiosClient.getUri(),'uri');
       const result = await this.axiosClient.post('/auth/login', credentials);
-      console.log('%c⧭', 'color: #ff0000', result);
+      logger.info(result);
       return true;
     } catch (error) {
-      console.log('%c⧭', 'color: #aa00ff', error);
+      logger.error(error);
       
     }
   }
