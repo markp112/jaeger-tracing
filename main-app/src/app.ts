@@ -1,5 +1,4 @@
-import { initializeTracing } from './tracing/tracing';
-const tracer = initializeTracing('node-app', 'development');
+import { tracer } from './tracing';
 import express, { Request, Response }  from 'express';
 import { logger } from './logger/logger'; 
 import { PrismaClient } from '@prisma/client';
