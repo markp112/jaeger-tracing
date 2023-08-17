@@ -1,16 +1,16 @@
 import { tracer } from './tracing';
 import express, { Request, Response }  from 'express';
-import { logger } from './logger/logger'; 
+import { logger } from './logger/logger';
+import pino from 'pino-http';
 import { PrismaClient } from '@prisma/client';
 import { authRouter } from './api/auth/auth';
 
 const app = express();
+app.use(pino);
 
 const prisma = new PrismaClient({});
 
-
 app.get('/', (req, res) => {
-  logger.info('app running');
   res.send('Hello World!');
 });
 
