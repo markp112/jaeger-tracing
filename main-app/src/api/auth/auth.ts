@@ -1,10 +1,12 @@
+import { initializeTracing } from '../../tracing/tracing';
+const tracer = initializeTracing('main-app', 'development');
 import express, {Request, Response} from 'express';
 import { logger } from '../../logger/logger';
 import { AuthRepository } from '@core/repository/auth/auth.repository';
 import { AuthService } from '@core/service/auth/auth.service';
 import { Credential } from '@model/auth/auth.model';
 import { Config } from '../../config/config';
-import { tracer } from '../../tracing';
+// import { tracer } from '../../tracing';
 
 const authRouter = express.Router();
 const ROUTE_PATH = '/auth';

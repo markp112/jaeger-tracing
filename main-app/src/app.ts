@@ -1,4 +1,5 @@
-import { tracer } from './tracing';
+import { initializeTracing } from './tracing/tracing';
+const tracer = initializeTracing('main-app', 'development');
 import express, { Request, Response }  from 'express';
 import { logger } from './logger/logger';
 import pino from 'pino-http';
