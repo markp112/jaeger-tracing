@@ -25,12 +25,15 @@ authRouter.post(getPath('login'), async (req: Request, res: Response) => {
         logger.error('invalid credentials - Missing');
         res.status(400).send('missing credentials')
       }
-      if (bodyData.userName) {
-        const credentials: Credential = bodyData;
+      // if (bodyData.userName) {
+        const credentials: Credential = {
+          username: 'test',
+          password: 'test'
+        }
         const authService = new AuthService(new AuthRepository(baseUrl));
         const loggedIn = await authService.login(credentials);
         res.status(200).send(loggedIn);
-      }
+      // }
     } catch(e) {
       requestSpan.setAttribute('http.status', 500);
       res.status(500).json({ error: 500, details: e });
