@@ -19,9 +19,10 @@ class AuthRepository implements Authentication {
   };
 
   async login(credentials: Credential): Promise<boolean> {
+    logger.info('respository -login -called')
     logger.info(credentials);
     try {
-      
+      logger.info(this.axiosClient.getUri(),'uri');
       const result = await this.axiosClient.post('/auth/login', credentials);
       console.log('%c⧭', 'color: #ff0000', result);
       return true;

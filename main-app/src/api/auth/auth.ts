@@ -18,6 +18,7 @@ authRouter.post(getPath('login'), async (req: Request, res: Response) => {
   await tracer.startActiveSpan('Post auth/login', async (requestSpan) => {
     try {
       const bodyData = req.body;
+      req.log.info(bodyData);
       const baseUrl = new Config.AuthUrl().getUrl();
       req.log.info(baseUrl, '--base url');
       if (!bodyData) {
