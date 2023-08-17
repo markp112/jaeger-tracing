@@ -19,7 +19,7 @@ authRouter.post(getPath('login'), async (req: Request, res: Response) => {
     try {
       const bodyData = req.body;
       const baseUrl = new Config.AuthUrl().getUrl();
-      console.log('%c⧭', 'color: #00a3cc', baseUrl);
+      req.log.info(baseUrl, '--base url');
       if (!bodyData) {
         logger.error('invalid credentials - Missing');
         res.status(400).send('missing credentials')
