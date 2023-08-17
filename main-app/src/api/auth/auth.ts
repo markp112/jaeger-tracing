@@ -1,11 +1,11 @@
 
+// import { tracer } from '../../tracing';
 import express, {Request, Response} from 'express';
 import { logger } from '../../logger/logger';
 import { AuthRepository } from '@core/repository/auth/auth.repository';
 import { AuthService } from '@core/service/auth/auth.service';
 import { Credential } from '@model/auth/auth.model';
 import { Config } from '../../config/config';
-import { tracer } from '../../tracing';
 
 const authRouter = express.Router();
 const ROUTE_PATH = '/auth';
@@ -15,7 +15,7 @@ const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 authRouter.post(getPath('login'), async (req: Request, res: Response) => {
   logger.child({name: 'Auth'});
   req.log.info('login called');
-  await tracer.startActiveSpan('Post auth/login', async (requestSpan) => {
+  // await tracer.startActiveSpan('Post auth/login', async (requestSpan) => {
     try {
       const bodyData = req.body;
       const baseUrl = new Config.AuthUrl().getUrl();
@@ -31,12 +31,13 @@ authRouter.post(getPath('login'), async (req: Request, res: Response) => {
         res.status(200).send(loggedIn);
       }
     } catch(e) {
-      requestSpan.setAttribute('http.status', 500);
+      // requestSpan.setAttribute('http.status', 500);
       res.status(500).json({ error: 500, details: e });
-    } finally {
-      requestSpan.end();
-    }
-  });
+
+    }    // } finally {
+    //   requestSpan.end();
+    // }
+  // });
 });
 
 export { authRouter };
