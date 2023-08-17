@@ -1,5 +1,4 @@
-import { initializeTracing } from './tracing/tracing';
-const tracer = initializeTracing('main-app', 'test');
+import { tracer } from './tracing';
 
 import express, { Request, Response }  from 'express';
 import { logger } from './logger/logger';
@@ -7,7 +6,6 @@ import pinoHttp from 'pino-http';
 import { PrismaClient } from '@prisma/client';
 import { authRouter } from './api/auth/auth';
 import bodyParser from 'body-parser';
-import { info } from 'console';
 
 const app = express();
 app.use(pinoHttp({
