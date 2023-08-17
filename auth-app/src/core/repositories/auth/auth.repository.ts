@@ -13,7 +13,7 @@ class AuthRepository implements Authentication {
 
   async login(credentials: Credential): Promise<boolean> {
     logger.info(credentials);
-    await delay(5000);
+    await delay(2000);
     return true;
   }
 }
