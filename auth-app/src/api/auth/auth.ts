@@ -10,10 +10,11 @@ const ROUTE_PATH = '/auth';
 const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`; 
 
 authRouter.post(getPath('login'), async (req: Request, res: Response) => {
+  req.log.info('login called');
   const bodyData = req.body;
   if (!bodyData) {
     logger.error('invalid credentials - Missing');
-    res.status(400).send('mssing credentials')
+    res.status(400).send('missing credentials')
   }
   if (bodyData.userName) {
     const credentials: Credential = bodyData;
