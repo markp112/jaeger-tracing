@@ -12,11 +12,9 @@ const ROUTE_PATH = '/auth';
 const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`; 
 
 authRouter.post(getPath('login'), async (req: Request, res: Response) => {
-  await tracer.startActiveSpan('Get /users/random', async (requestSpan) => {
+  await tracer.startActiveSpan('Post auth/login', async (requestSpan) => {
     try {
-
       const bodyData = req.body;
-      console.log('%c⧭', 'color: #00e600', bodyData);
       const baseUrl = new Config.AuthUrl().getUrl();
       console.log('%c⧭', 'color: #00a3cc', baseUrl);
       if (!bodyData) {
