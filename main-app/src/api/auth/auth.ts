@@ -12,6 +12,8 @@ const ROUTE_PATH = '/auth';
 const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`; 
 
 authRouter.post(getPath('login'), async (req: Request, res: Response) => {
+  logger.child({name: 'Auth'});
+  logger.info('login called');
   await tracer.startActiveSpan('Post auth/login', async (requestSpan) => {
     try {
       const bodyData = req.body;
