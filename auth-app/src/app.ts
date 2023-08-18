@@ -20,7 +20,7 @@ app.use(authRouter);
 // const prisma = new PrismaClient({});
 
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
 	await tracer.startActiveSpan('Get /users/random', async (requestSpan) => {
     try {
 			logger.info('app running');
@@ -31,8 +31,8 @@ app.get('/', (req, res) => {
       res.status(500).json({ error: 500, details: e });
     } finally {
       requestSpan.end();
-    }
-			
+		}
+	});
 });
 
 app.use((req, res) => {
