@@ -5,8 +5,8 @@ class AuthService {
 
   constructor(private repository: Authentication) {}
 
-  async login(credentials: Credential): Promise<boolean> {
-    return await this.repository.login(credentials);
+  async login(credentials: Credential, waitDelay: number): Promise<boolean> {
+    return await this.repository.login(credentials, waitDelay);
   } 
 }
 

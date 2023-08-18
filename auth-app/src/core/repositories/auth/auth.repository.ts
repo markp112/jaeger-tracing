@@ -6,14 +6,14 @@ function delay(ms: number) {
 }
 
 interface Authentication {
-  login(credentials: Credential):Promise<boolean>;
+  login(credentials: Credential, waitDelay: number):Promise<boolean>;
 }
 
 class AuthRepository implements Authentication {
 
-  async login(credentials: Credential): Promise<boolean> {
+  async login(credentials: Credential, waitDelay = 2000): Promise<boolean> {
     logger.info(credentials);
-    await delay(2000);
+    await delay(waitDelay);
     return true;
   }
 }
