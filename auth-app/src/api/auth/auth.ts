@@ -3,6 +3,7 @@ import { logger } from '../../logger/logger';
 import { AuthService } from '@core/services/auth/auth.service';
 import { AuthRepository } from '@core/repositories/auth/auth.repository';
 import { Credential } from '@core/models/auth/auth.model';
+import { PrismaClient } from '@prisma/client';
 
 const authRouter = express.Router();
 const ROUTE_PATH = '/auth';
@@ -22,7 +23,8 @@ authRouter.post(getPath('login'), async (req: Request, res: Response) => {
     waitDelay = parseInt(delay);
   }
   const credentials: Credential = bodyData;
-  const authService = new AuthService(new AuthRepository());
+  const prisma = new PrismaClient();
+  const authService = new AuthService(new AuthRepository(prisma));
   const loggedIn = await authService.login(credentials, waitDelay);
   res.status(200).send(loggedIn);
 });

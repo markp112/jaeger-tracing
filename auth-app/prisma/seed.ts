@@ -8,13 +8,13 @@ async function main() {
     await prisma.user.create({
         data: {
                 id: uuid(),
-                name: 'fred',
+                username: 'fred',
         },
     });
     await prisma.user.create({
         data: {
                 id: uuid(),
-                name: 'test',
+                username: 'test',
         },
     });
 }

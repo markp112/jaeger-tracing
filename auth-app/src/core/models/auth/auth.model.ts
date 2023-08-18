@@ -1,6 +1,13 @@
+import { User } from '@prisma/client';
+
 interface Credential {
   username: string;
   password: string;
 };
 
-export { Credential };
+interface UserType extends User {
+  id: string;
+  username: string;
+}
+
+export { Credential, UserType };

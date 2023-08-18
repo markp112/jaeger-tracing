@@ -7,15 +7,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
-}
-
-model Post {
-  id          String  @id
-  description String?
-  userId      String
-  user        User    @relation(fields: [userId], references: [id])
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {

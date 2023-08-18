@@ -22,4 +22,6 @@ ENV DATABASE_URL = $URL
 EXPOSE 3010
 RUN npx prisma generate
 
+RUN npx prisma migrate dev --name init
+
 CMD [ "node", "dist/server.js" ]
