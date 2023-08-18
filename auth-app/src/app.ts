@@ -1,4 +1,4 @@
-// import { initializeTracing } from './tracing/tracing';
+import { tracer } from './tracing';
 // const tracer = initializeTracing('node-app', 'development');
 import express, { Request, Response }  from 'express';
 import pinoHttp from 'pino-http';
@@ -21,8 +21,18 @@ app.use(authRouter);
 
 
 app.get('/', (req, res) => {
-  logger.info('app running');
-  res.send('Hello World!');
+	await tracer.startActiveSpan('Get /users/random', async (requestSpan) => {
+    try {
+			logger.info('app running');
+			requestSpan.setAttribute('http.status', 200);
+			res.send('Hello World!');
+		} catch (e) {
+      requestSpan.setAttribute('http.status', 500);
+      res.status(500).json({ error: 500, details: e });
+    } finally {
+      requestSpan.end();
+    }
+			
 });
 
 app.use((req, res) => {

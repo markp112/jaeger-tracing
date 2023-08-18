@@ -32,13 +32,13 @@ authRouter.post(getPath('login'), async (req: Request, res: Response) => {
         }
         const authService = new AuthService(new AuthRepository(baseUrl));
         const loggedIn = await authService.login(credentials);
+        requestSpan.setAttribute('http.status', 200);
         res.status(200).send(loggedIn);
       // }
     } catch(e) {
       requestSpan.setAttribute('http.status', 500);
       res.status(500).json({ error: 500, details: e });
-
-     } finally {
+    } finally {
       requestSpan.end();
     }
   });
