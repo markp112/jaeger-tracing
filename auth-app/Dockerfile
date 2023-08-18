@@ -15,6 +15,11 @@ COPY . .
 
 RUN npm run build
 
+ARG URL = postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public
+
+ENV DATABASE_URL = $URL
+
 EXPOSE 3010
+RUN npx prisma generate
 
 CMD [ "node", "dist/server.js" ]
