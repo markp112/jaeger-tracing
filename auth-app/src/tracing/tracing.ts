@@ -27,10 +27,8 @@ export function initializeTracing(
   environment: string
 ): Tracer {
   const traceRatio = process.env.NODE_ENV === 'production' ? 0.1 : 1.0;
-
   const endpoint =
     process.env.JAEGER_END_POINT ?? 'http://jaeger-all-in-one-inmemory-collector.jaeger.svc:14268/api/traces';
-
   const jaegerExporter = new JaegerExporter({ endpoint });
   const provider = new NodeTracerProvider({
     sampler: new TraceIdRatioBasedSampler(traceRatio),
@@ -39,13 +37,11 @@ export function initializeTracing(
       [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: environment,
     }),
   });
-
   if (process.env.NODE_ENV === 'production') {
     provider.addSpanProcessor(new BatchSpanProcessor(jaegerExporter));
   } else {
     provider.addSpanProcessor(new SimpleSpanProcessor(jaegerExporter));
   }
-
   registerInstrumentations({
     instrumentations: [
       new HttpInstrumentation(),

@@ -1,4 +1,4 @@
 import { initializeTracing } from './tracing';
-const tracer = initializeTracing('main-app', 'test');
+const tracer = initializeTracing('auth-app', 'test');
 
 export { tracer };
