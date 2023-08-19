@@ -11,17 +11,17 @@ RUN npm install
 
 RUN npm ci
 
+COPY prisma ./prisma/
+COPY .env ./
 COPY . .
+
+RUN npx prisma generate
+RUN npx prisma migrate deploy
 
 RUN npm run build
 
-ARG URL = postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public
-
-ENV DATABASE_URL = $URL
 
 EXPOSE 3010
-RUN npx prisma generate
 
-RUN npx prisma migrate dev --name init
 
 CMD [ "node", "dist/server.js" ]
