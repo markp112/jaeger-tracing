@@ -12,8 +12,15 @@ RUN npm install
 RUN npm ci
 
 COPY prisma ./prisma/
-COPY .env ./
 COPY . .
+
+ARG URL=postgresql://USER:PASSWORD@postgresql:5432/auth?schema=public
+
+RUN echo ${URL}
+
+RUN touch .env
+
+RUN echo ${URL} > ./.env 
 
 RUN npx prisma generate
 RUN npx prisma migrate deploy
