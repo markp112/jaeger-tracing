@@ -17,17 +17,22 @@ class AuthRepository implements Authentication {
   async login(credentials: Credential, waitDelay: number): Promise<UserType> {
     logger.info(credentials);
     await delay(waitDelay);
-    const user = await this.client.user.findFirst({
-      where: {
-        username: 'test'
-      },
-    });
-    if (!user) {
-      throw new Error ('not Found')
-    } else {
-      return user;
-
+    try {
+      const user = await this.client.user.findFirst({
+        where: {
+          username: 'test'
+        },
+      });
+      if (!user) {
+        throw new Error ('not Found')
+      } else {
+        return user;
+  
+      }
+    } catch (err) {
+      throw new Error((err as Error).message);
     }
+
   }
 }
 
