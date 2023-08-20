@@ -1,4 +1,7 @@
-node_modules
+main-app/node_modules
+main-app/dist
+auth-app/node_modules
+auth-app/dist
 # Keep environment variables out of version control
 .env
-.dist
+dist
