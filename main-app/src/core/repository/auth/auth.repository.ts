@@ -1,10 +1,10 @@
-import { Credential } from '@model/auth/auth.model';
+import { Credential, UserType } from '@model/auth/auth.model';
 import { logger } from '@logger/logger';
 import axios, { Axios } from 'axios';
 
 
 interface Authentication {
-  login(credentials: Credential):Promise<boolean>;
+  login(credentials: Credential):Promise<UserType>;
 }
 
 class AuthRepository implements Authentication {
@@ -18,17 +18,16 @@ class AuthRepository implements Authentication {
     });
   };
 
-  async login(credentials: Credential): Promise<boolean> {
+  async login(credentials: Credential): Promise<UserType> {
     logger.info('respository -login -called')
     logger.info(credentials);
     try {
       logger.info(this.axiosClient.getUri(),'uri');
       const result = await this.axiosClient.post('/auth/login', credentials);
       logger.info(result);
-      return true;
+      return result.data as UserType
     } catch (error) {
       logger.error(error);
-      
     }
   }
 }

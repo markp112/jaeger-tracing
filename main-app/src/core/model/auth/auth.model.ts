@@ -3,4 +3,9 @@ interface Credential {
   password: string;
 };
 
-export { Credential };
+interface UserType {
+  id: string;
+  username: string;
+}
+
+export { Credential, UserType };
