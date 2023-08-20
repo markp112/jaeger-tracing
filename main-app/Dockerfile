@@ -17,5 +17,4 @@ RUN npm run build
 
 
 EXPOSE 3000
-RUN npx prisma generate
 CMD [ "node", "dist/server.js" ]
