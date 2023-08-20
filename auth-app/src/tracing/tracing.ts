@@ -37,11 +37,7 @@ export function initializeTracing(
       [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: environment,
     }),
   });
-  // if (process.env.NODE_ENV === 'production') {
-    provider.addSpanProcessor(new BatchSpanProcessor(jaegerExporter));
-  // } else {
-  //   provider.addSpanProcessor(new SimpleSpanProcessor(jaegerExporter));
-  // }
+  provider.addSpanProcessor(new BatchSpanProcessor(jaegerExporter));
   registerInstrumentations({
     instrumentations: [
       new HttpInstrumentation(),
@@ -54,5 +50,4 @@ export function initializeTracing(
   provider.register();
 
   return trace.getTracer(serviceName);
-  // return provider.getTracer(serviceName);
 }

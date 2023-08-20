@@ -5,35 +5,38 @@ import { AuthRepository } from '@core/repositories/auth/auth.repository';
 import { Credential } from '@core/models/auth/auth.model';
 import { PrismaClient } from '@prisma/client';
 import { tracer } from '../../tracing';
+import { HTTP_STATUS } from './common/httpStatus/httpStatusCodes';
 
 const authRouter = express.Router();
 const ROUTE_PATH = '/auth';
+const DELAY = 1000;
 
 const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`; 
+
+const getDelay = () => {
+  const delay = process.env.WAIT_DELAY;
+  return delay ? parseInt(delay) : DELAY;  
+}
 
 authRouter.post(getPath('login'), async (req: Request, res: Response) => {
   await tracer.startActiveSpan('Post /auth/user', async (requestSpan) => {
     try {
       const bodyData = req.body;
-			req.log.info(`auth/user called with`, bodyData);
+			req.log.info(`auth/user called with ${bodyData}`);
       if (!bodyData) {
         logger.error('invalid credentials - Missing');
-        res.status(400).send('missing credentials')
+        res.status(HTTP_STATUS.BAD_REQUEST).send('missing credentials')
       }
-      const delay = process.env.WAIT_DELAY;
-      let waitDelay = 1000;
-      if (delay) {
-        waitDelay = parseInt(delay);
-      }
+      const waitDelay = getDelay();
       const credentials: Credential = bodyData;
       const prisma = new PrismaClient();
       const authService = new AuthService(new AuthRepository(prisma));
       const loggedIn = await authService.login(credentials, waitDelay);
-      requestSpan.setAttribute('http.status', 200);
-      res.status(200).send(loggedIn);
+      requestSpan.setAttribute('http.status', HTTP_STATUS.OK);
+      res.status(HTTP_STATUS.OK).send(loggedIn);
     } catch (e) {
-      requestSpan.setAttribute('http.status', 500);
-      res.status(500).json({ error: 500, details: e });
+      requestSpan.setAttribute('http.status', HTTP_STATUS.SERVER_ERROR);
+      res.status(HTTP_STATUS.SERVER_ERROR).json({ error: HTTP_STATUS.SERVER_ERROR, details: e });
     } finally {
       requestSpan.end();
 		}  
