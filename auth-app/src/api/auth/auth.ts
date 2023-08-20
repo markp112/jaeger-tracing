@@ -4,7 +4,7 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { AuthRepository } from '@core/repositories/auth/auth.repository';
 import { Credential } from '@core/models/auth/auth.model';
 import { PrismaClient } from '@prisma/client';
-import { tracer } from 'tracing';
+import { tracer } from '../../tracing';
 
 const authRouter = express.Router();
 const ROUTE_PATH = '/auth';
