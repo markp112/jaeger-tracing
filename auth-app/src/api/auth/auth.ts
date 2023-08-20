@@ -35,9 +35,10 @@ authRouter.post(getPath('login'), async (req: Request, res: Response) => {
       requestSpan.setAttribute('http.status', HTTP_STATUS.OK);
       res.status(HTTP_STATUS.OK).send(loggedIn);
     } catch (err) {
-      requestSpan.setAttribute('http.status', HTTP_STATUS.SERVER_ERROR);
-      requestSpan.setAttribute('authApp.error', err as string);
-      res.status(HTTP_STATUS.SERVER_ERROR).json({ error: HTTP_STATUS.SERVER_ERROR, details: err as string});
+      logger.error(err);
+      requestSpan.setAttribute('http.status', (err as Error).message);
+      requestSpan.setAttribute('authApp.error', (err as Error).message);
+      res.status(HTTP_STATUS.SERVER_ERROR).json({ error: HTTP_STATUS.SERVER_ERROR, details: (err as Error).message});
     } finally {
       requestSpan.end();
 		}  

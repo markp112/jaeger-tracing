@@ -33,7 +33,7 @@ class AuthRepository implements Authentication {
     } catch (err) {
 
       logger.error(`Request failed: code: ${(err as PrismaClientInitializationError).errorCode} mesg: ${(err as PrismaClientInitializationError).message}`);
-      throw new Error((err as string));
+      throw new Error((err as PrismaClientInitializationError).message);
     }
 
   }
