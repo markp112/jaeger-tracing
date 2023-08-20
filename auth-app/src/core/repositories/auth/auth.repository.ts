@@ -31,7 +31,7 @@ class AuthRepository implements Authentication {
       }
     } catch (err) {
       logger.error(`Request failed: ${err}`);
-      throw new Error((err as Error).message);
+      throw new Error((err as string));
     }
 
   }

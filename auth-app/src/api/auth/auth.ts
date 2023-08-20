@@ -34,9 +34,10 @@ authRouter.post(getPath('login'), async (req: Request, res: Response) => {
       const loggedIn = await authService.login(credentials, waitDelay);
       requestSpan.setAttribute('http.status', HTTP_STATUS.OK);
       res.status(HTTP_STATUS.OK).send(loggedIn);
-    } catch (e) {
+    } catch (err) {
       requestSpan.setAttribute('http.status', HTTP_STATUS.SERVER_ERROR);
-      res.status(HTTP_STATUS.SERVER_ERROR).json({ error: HTTP_STATUS.SERVER_ERROR, details: e });
+      requestSpan.setAttribute('error', err as string);
+      res.status(HTTP_STATUS.SERVER_ERROR).json({ error: HTTP_STATUS.SERVER_ERROR, details: err });
     } finally {
       requestSpan.end();
 		}  
