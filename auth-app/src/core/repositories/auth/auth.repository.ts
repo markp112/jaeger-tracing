@@ -1,6 +1,7 @@
 import { Credential, UserType } from '@model/auth/auth.model';
 import { logger } from '@logger/logger';
 import { PrismaClient } from "@prisma/client";
+import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
 
 function delay(ms: number) {
   return new Promise( resolve => setTimeout(resolve, ms) );
@@ -30,7 +31,8 @@ class AuthRepository implements Authentication {
   
       }
     } catch (err) {
-      logger.error(`Request failed: ${err}`);
+
+      logger.error(`Request failed: code: ${(err as PrismaClientInitializationError).errorCode} mesg: ${(err as PrismaClientInitializationError).message}`);
       throw new Error((err as string));
     }
 
