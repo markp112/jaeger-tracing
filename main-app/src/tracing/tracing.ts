@@ -40,11 +40,11 @@ export function initializeTracing(
     }),
   });
 
-  if (process.env.NODE_ENV === 'production') {
+  // if (process.env.NODE_ENV === 'production') {
     provider.addSpanProcessor(new BatchSpanProcessor(jaegerExporter));
-  } else {
-    provider.addSpanProcessor(new SimpleSpanProcessor(jaegerExporter));
-  }
+  // } else {
+    // provider.addSpanProcessor(new SimpleSpanProcessor(jaegerExporter));
+  // }
 
   registerInstrumentations({
     instrumentations: [
