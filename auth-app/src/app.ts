@@ -1,11 +1,9 @@
 import { tracer } from './tracing';
-// const tracer = initializeTracing('node-app', 'development');
-import express, { Request, Response }  from 'express';
+import express from 'express';
 import pinoHttp from 'pino-http';
 import { logger } from './logger/logger';
 import bodyParser from 'body-parser';
 import { authRouter } from './api/auth/auth';
-// import { PrismaClient } from '@prisma/client';
 
 const app = express();
 app.use(pinoHttp({
@@ -17,11 +15,9 @@ app.use(bodyParser.json());
 
 app.use(authRouter);
 
-// const prisma = new PrismaClient({});
-
 
 app.get('/', async (req, res) => {
-	await tracer.startActiveSpan('Get /users/random', async (requestSpan) => {
+	await tracer.startActiveSpan('Get /', async (requestSpan) => {
     try {
 			logger.info('app running');
 			requestSpan.setAttribute('http.status', 200);
@@ -42,6 +38,5 @@ app.use((req, res) => {
 		status: '404',
 	});
 });
-
 
 export { app };

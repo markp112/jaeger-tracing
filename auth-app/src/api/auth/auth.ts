@@ -21,7 +21,7 @@ authRouter.post(getPath('login'), async (req: Request, res: Response) => {
         res.status(400).send('missing credentials')
       }
       const delay = process.env.WAIT_DELAY;
-      let waitDelay = 2000;
+      let waitDelay = 1000;
       if (delay) {
         waitDelay = parseInt(delay);
       }
