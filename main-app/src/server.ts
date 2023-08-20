@@ -1,7 +1,7 @@
 import { app } from './app';
 import { logger } from '@logger/logger';
 
-const port = 3000;
+const port = process.env.PORT ?? 3000;
 
 logger.info('app is starting');
 

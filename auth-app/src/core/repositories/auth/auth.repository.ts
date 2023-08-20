@@ -30,6 +30,7 @@ class AuthRepository implements Authentication {
   
       }
     } catch (err) {
+      logger.info(err);
       throw new Error((err as Error).message);
     }
 

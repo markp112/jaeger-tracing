@@ -59,9 +59,11 @@ The deployment for auth-app has an optional environment variables:
 * JAEGER_END_POINT - defines the end point for sending traces to Jaeger in the form of:
 http://jaeger-all-in-one-inmemory-collector.jaeger.svc:14268/api/traces 
 This is the name of the jaeger service followed by the project name 'jaeger.svc' 
+* PORT - port on which the application is running
 
 The deployment for the main app requires the end point for the auth-service:
 * AUTH_URL - which is the service name of the auth app in the format of http://<service name>:port
+* PORT - port on which the application is running
 
 If everything is working the tracing can be tested by posting to the main-app route:
 
