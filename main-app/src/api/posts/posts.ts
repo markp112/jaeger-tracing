@@ -34,3 +34,5 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
     }
   });
 });
+
+export { postsRouter };

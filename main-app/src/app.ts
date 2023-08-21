@@ -1,19 +1,18 @@
-import { tracer } from './tracing';
-
-import express, { Request, Response }  from 'express';
-import { logger } from './logger/logger';
+import express from 'express';
 import pinoHttp from 'pino-http';
-import { PrismaClient } from '@prisma/client';
 import { authRouter } from './api/auth/auth';
 import bodyParser from 'body-parser';
+import { logger } from '@logger/logger';
+import { postsRouter } from '@api/posts/posts';
 
 const app = express();
-app.use(pinoHttp({
-  logger,
-  level: 'info'
-}));
+app.use(
+  pinoHttp({
+    logger,
+    level: 'info',
+  })
+);
 
-// const prisma = new PrismaClient({});
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -22,30 +21,6 @@ app.get('/', (req, res) => {
 });
 
 app.use(authRouter);
-
-// app.get('/users/random', async (_req: Request, res: Response) => {
-//   logger.info('/users/random - called');
-//   await tracer.startActiveSpan('Get /users/random', async (requestSpan) => {
-//     try {
-//       let users = await prisma.user.findMany({
-//         include: {
-//           posts: true,
-//         },
-//       });
-
-//       // select 10 users randomly
-//       const shuffledUsers = users.sort(() => 0.5 - Math.random());
-//       const selectedUsers = shuffledUsers.slice(0, 10);
-//       requestSpan.setAttribute('http.status', 200);
-//       res.status(200).json(selectedUsers);
-//     } catch (e) {
-//       requestSpan.setAttribute('http.status', 500);
-//       res.status(500).json({ error: 500, details: e });
-//     } finally {
-//       requestSpan.end();
-//     }
-//   });
-// });
-
+app.use(postsRouter);
 
 export { app };
