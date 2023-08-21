@@ -18,11 +18,11 @@ class PostsRepository implements Posts {
 
   async fetch(): Promise<PostType[]> {
     try {
-      logger.info(this.axiosClient.getUri(), 'uri');
       const result = await this.axiosClient.post('/posts');
+      logger.info(`result returned:--> ${JSON.stringify(result)}`);
       return result.data as PostType[];
     } catch (error) {
-      logger.error(error);
+      logger.error(`Error from posts call --> ${error}`);
       throw new Error(error.details);
     }
   }
