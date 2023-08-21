@@ -18,7 +18,12 @@ class PostsRepository implements Posts {
 
   async fetch(): Promise<PostType[]> {
     try {
-      const result = await this.axiosClient.get('/posts');
+      const result = await this.axiosClient.get('/posts', {
+        headers: {
+          'Content-Type': 'appplication/json',
+          Accept: 'application/json',
+        },
+      });
       logger.info(`result returned:--> ${JSON.stringify(result)}`);
       return result.data as PostType[];
     } catch (error) {
