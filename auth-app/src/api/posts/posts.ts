@@ -18,7 +18,7 @@ postsRouter.post(getPath(''), async (req: Request, res: Response) => {
       const prisma = new PrismaClient();
       const postService = new PostService(new PostRepository(prisma));
       const posts = await postService.fetchPosts();
-      logger.info(`posts retrieved -->${posts}`);
+      logger.info(`posts retrieved -->${JSON.stringify(posts)}`);
       requestSpan.setAttribute('http.status', HTTP_STATUS.OK);
       res.status(HTTP_STATUS.OK).send(posts);
     } catch (err) {
