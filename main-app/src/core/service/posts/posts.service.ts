@@ -1,8 +1,8 @@
 import { PostType } from '@model/posts/posts.model';
-import { Posts } from '@repository/posts/posts.repository';
+import type { PostsInterface } from '@repository/posts/posts.repository';
 
 class PostsService {
-  constructor(private repository: Posts) {}
+  constructor(private repository: PostsInterface) {}
 
   async fetchPosts(): Promise<PostType[]> {
     return await this.repository.fetch();

@@ -2,11 +2,11 @@ import { logger } from '@logger/logger';
 import { PostType } from '@model/posts/posts.model';
 import axios, { Axios } from 'axios';
 
-interface Posts {
+interface PostsInterface {
   fetch(): Promise<PostType[]>;
 }
 
-class PostsRepository implements Posts {
+class PostsRepository implements PostsInterface {
   private axiosClient: Axios;
 
   constructor(private baseUrl: string) {
@@ -25,7 +25,7 @@ class PostsRepository implements Posts {
         },
       });
       logger.info(`result returned:--> ${JSON.stringify(result)}`);
-      return result.data as PostType[];
+      return result.data.data as PostType[];
     } catch (error) {
       logger.error(`Error from posts call${error}`);
       throw new Error(error.details);
@@ -35,4 +35,4 @@ class PostsRepository implements Posts {
 
 export { PostsRepository };
 
-export type { Posts };
+export type { PostsInterface };
