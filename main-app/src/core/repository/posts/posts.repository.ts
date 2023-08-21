@@ -23,7 +23,7 @@ class PostsRepository implements Posts {
       return result.data as PostType[];
     } catch (error) {
       logger.error(`Error from posts call --> ${error}`);
-      throw new Error(error.details);
+      throw new Error(error);
     }
   }
 }

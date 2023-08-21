@@ -14,13 +14,12 @@ const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 postsRouter.post(getPath(''), async (req: Request, res: Response) => {
   await tracer.startActiveSpan('Post /posts', async (requestSpan) => {
     try {
-      req.log.info(`posts/ called with`);
       const prisma = new PrismaClient();
       const postService = new PostService(new PostRepository(prisma));
       const posts = await postService.fetchPosts();
       logger.info(`posts retrieved -->${JSON.stringify(posts)}`);
       requestSpan.setAttribute('http.status', HTTP_STATUS.OK);
-      res.status(HTTP_STATUS.OK).send(posts);
+      res.status(HTTP_STATUS.OK).send(JSON.stringify(posts));
     } catch (err) {
       logger.error(`Error returned from service: --> ${err}`);
       requestSpan.setAttribute('http.status', (err as Error).message);
