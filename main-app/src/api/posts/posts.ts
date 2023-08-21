@@ -1,9 +1,9 @@
+import { tracer } from '../../tracing';
 import { PostsService } from '@core/service/posts/posts.service';
 import { logger } from '@logger/logger';
 import { PostsRepository } from '@repository/posts/posts.repository';
 import { Config } from '../../config/config';
 import express, { Request, Response } from 'express';
-import { tracer } from 'tracing';
 
 const postsRouter = express.Router();
 const ROUTE_PATH = '/posts';
