@@ -1,7 +1,7 @@
 interface PostType {
   id: string;
   post: string;
-  date: Date;
+  date: string;
 }
 
 export { PostType };
