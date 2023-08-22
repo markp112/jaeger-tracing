@@ -19,6 +19,7 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
       req.log.info(baseUrl, '--base url');
       const postsService = new PostsService(new PostsRepository(baseUrl));
       const posts = await postsService.fetchPosts();
+      logger.info('posts---> is ', posts);
       const result = {
         count: posts.length,
         firstRecord: posts[0],
