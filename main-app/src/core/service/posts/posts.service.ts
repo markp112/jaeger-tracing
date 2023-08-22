@@ -7,8 +7,9 @@ class PostsService {
 
   async fetchPosts(): Promise<PostType[]> {
     const result = await this.repository.fetch();
-    logger.info(`result from repository is: ${result[0]}`);
-    return result;
+    logger.info(`result from repository is: ${result}`);
+    logger.info(`result from repository is: ${result.length}`);
+    return result as PostType[];
   }
 }
 
