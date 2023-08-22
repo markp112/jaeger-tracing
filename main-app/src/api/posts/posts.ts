@@ -18,20 +18,20 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
       const baseUrl = new Config.AuthUrl().getUrl();
       req.log.info(baseUrl, '--base url');
       const postsService = new PostsService(new PostsRepository(baseUrl));
-      const posts = await postsService.fetchPosts();
-      logger.info('posts---> is ', posts);
+      const postResult = await postsService.fetchPosts();
+      logger.info('posts---> is ', postResult);
       const result = {
-        count: posts.length,
-        firstRecord: posts[0],
-        lastRecord: posts[length - 1],
+        count: postResult.length,
+        firstRecord: postResult[0],
+        lastRecord: postResult[length - 1],
       };
 
       requestSpan.setAttribute('http.status', 200);
       res.status(200).send(result);
     } catch (e) {
-      logger.error(`error caught ->> ${JSON.stringify(e)}`);
+      logger.error(`error caught ->> ${(e as Error).message}`);
       requestSpan.setAttribute('http.status', 500);
-      requestSpan.recordException(e);
+      requestSpan.recordException(JSON.stringify(e));
       res.status(500).json({ error: 500, details: e });
     } finally {
       requestSpan.end();

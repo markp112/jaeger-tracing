@@ -25,7 +25,9 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
       };
       res.status(HTTP_STATUS.OK).send(JSON.stringify(resp));
     } catch (err) {
-      logger.error(`Error returned from service: --> ${err}`);
+      logger.error(
+        `Error returned from service: --> ${(err as Error).message}`
+      );
       requestSpan.setAttribute('http.status', (err as Error).message);
       requestSpan.setAttribute('authApp.error', (err as Error).message);
       res.status(HTTP_STATUS.SERVER_ERROR).json({
