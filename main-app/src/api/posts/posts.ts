@@ -24,6 +24,7 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
         firstRecord: posts[0],
         lastRecord: posts[length - 1],
       };
+
       requestSpan.setAttribute('http.status', 200);
       res.status(200).send(result);
     } catch (e) {

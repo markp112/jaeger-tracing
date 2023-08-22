@@ -24,11 +24,11 @@ class PostsRepository implements PostsInterface {
           Accept: 'application/json',
         },
       });
-      logger.info(`result returned:--> ${JSON.stringify(result)}`);
+      logger.info(`returned from post`);
       return result.data.data as PostType[];
     } catch (error) {
       logger.error(`Error from posts call${error}`);
-      throw new Error(error.details);
+      throw new Error(error);
     }
   }
 }
