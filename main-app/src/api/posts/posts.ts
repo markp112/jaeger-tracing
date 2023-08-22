@@ -31,6 +31,7 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
     } catch (e) {
       logger.error(`error caught ->> ${JSON.stringify(e)}`);
       requestSpan.setAttribute('http.status', 500);
+      requestSpan.recordException(e);
       res.status(500).json({ error: 500, details: e });
     } finally {
       requestSpan.end();
