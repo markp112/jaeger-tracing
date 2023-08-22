@@ -21,7 +21,7 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
       requestSpan.setAttribute('http.status', HTTP_STATUS.OK);
       const resp = {
         status: HTTP_STATUS.OK,
-        data: JSON.stringify(posts),
+        data: posts,
       };
       res.status(HTTP_STATUS.OK).send(JSON.stringify(resp));
     } catch (err) {
