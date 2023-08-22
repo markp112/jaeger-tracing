@@ -4,6 +4,7 @@ import { logger } from '@logger/logger';
 import { PostsRepository } from '@repository/posts/posts.repository';
 import { Config } from '../../config/config';
 import express, { Request, Response } from 'express';
+import { PostType } from '@model/posts/posts.model';
 
 const postsRouter = express.Router();
 const ROUTE_PATH = '/posts';
@@ -16,8 +17,8 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
     try {
       const baseUrl = new Config.AuthUrl().getUrl();
       const postsService = new PostsService(new PostsRepository(baseUrl));
-      const postResult = await postsService.fetchPosts();
-      logger.info('posts---> is ', postResult);
+      const postResult: PostType[] = await postsService.fetchPosts();
+      logger.info('posts---> is ', typeof postResult);
       if (postResult) {
         const result = {
           count: postResult.length,
