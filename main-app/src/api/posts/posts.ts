@@ -13,7 +13,7 @@ const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 
 postsRouter.get(getPath(''), async (req: Request, res: Response) => {
   logger.child({ name: 'Posts' });
-  await tracer.startActiveSpan('Post posts/', async (requestSpan) => {
+  await tracer.startActiveSpan('Get posts/', async (requestSpan) => {
     try {
       const baseUrl = new Config.AuthUrl().getUrl();
       const postsService = new PostsService(new PostsRepository(baseUrl));
@@ -25,6 +25,7 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
           firstRecord: postResult[0],
           lastRecord: postResult[length - 1],
         };
+        requestSpan.setAttribute('http.status', 200);
         res.status(200).send(result);
       } else {
         requestSpan.recordException(JSON.stringify('result is undefined!'));
@@ -34,8 +35,8 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
     } catch (e) {
       logger.error(`error caught ->> ${(e as Error).message}`);
       requestSpan.setAttribute('http.status', 500);
-      requestSpan.recordException(JSON.stringify(e));
-      res.status(500).json({ error: 500, details: e });
+      requestSpan.recordException(`${(e as Error).message}`);
+      res.status(500).json({ error: 500, details: `${(e as Error).message}` });
     } finally {
       requestSpan.end();
     }
