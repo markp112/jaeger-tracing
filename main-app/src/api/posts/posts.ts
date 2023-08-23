@@ -23,7 +23,7 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
         const result = {
           count: postResult.length,
           firstRecord: postResult[0],
-          lastRecord: postResult[length - 1],
+          lastRecord: postResult[postResult.length - 1],
         };
         requestSpan.setAttribute('http.status', 200);
         res.status(200).send(result);
