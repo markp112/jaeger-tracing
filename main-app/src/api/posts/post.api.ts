@@ -2,7 +2,7 @@ import { traceRequest } from '@api/decorators/tracing/tracing.decorator';
 import { PostsService } from '@core/service/posts/posts.service';
 import { PostType } from '@model/posts/posts.model';
 import { PostsRepository } from '@repository/posts/posts.repository';
-import { Config } from 'config/config';
+import { Config } from '../../config/config';
 import { Request } from 'express';
 
 type Result = {
