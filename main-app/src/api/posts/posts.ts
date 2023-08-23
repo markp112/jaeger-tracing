@@ -18,11 +18,6 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
       const baseUrl = new Config.AuthUrl().getUrl();
       const postsService = new PostsService(new PostsRepository(baseUrl));
       const postResult: PostType[] = await postsService.fetchPosts();
-      logger.info(
-        `posts---> is ${typeof postResult} ${JSON.stringify(postResult)} ${
-          postResult.length
-        }`
-      );
       if (postResult) {
         const result = {
           count: postResult.length,
@@ -33,9 +28,9 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
         res.status(200).send(result);
       } else {
         requestSpan.recordException(JSON.stringify('result is undefined!'));
+        requestSpan.setAttribute('http.status', 200);
         res.status(200).send('result is undefined');
       }
-      requestSpan.setAttribute('http.status', 200);
     } catch (e) {
       logger.error(`error caught ->> ${(e as Error).message}`);
       requestSpan.setAttribute('http.status', 500);

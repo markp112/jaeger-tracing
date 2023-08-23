@@ -24,9 +24,6 @@ class PostsRepository implements PostsInterface {
           Accept: 'application/json',
         },
       });
-      logger.info(
-        `returned from post --> data is ${JSON.stringify(result.data.data)}`
-      );
       return result.data.data as PostType[];
     } catch (error) {
       logger.error(`Error from posts call${error}`);

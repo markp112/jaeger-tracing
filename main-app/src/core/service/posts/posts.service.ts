@@ -7,10 +7,7 @@ class PostsService {
 
   async fetchPosts(): Promise<PostType[]> {
     try {
-      const result = await this.repository.fetch();
-      logger.info(`result from repository is: ${JSON.stringify(result)}`);
-      logger.info(`result from repository is: ${result.length}`);
-      return result;
+      return await this.repository.fetch();
     } catch (error) {
       logger.error(`errored in fetchPosts`, (error as Error).message);
       throw new Error('I have been hiding down here !');
