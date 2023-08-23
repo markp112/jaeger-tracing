@@ -18,7 +18,7 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
       const baseUrl = new Config.AuthUrl().getUrl();
       const postsService = new PostsService(new PostsRepository(baseUrl));
       const postResult: PostType[] = await postsService.fetchPosts();
-      logger.info(`posts---> is ${typeof postResult}`);
+      logger.info(`posts---> is ${typeof postResult} ${postResult}`);
       if (postResult) {
         const result = {
           count: postResult.length,
