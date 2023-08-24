@@ -10,16 +10,16 @@ function traceRequest(endPoint: string) {
     descriptor.value = async function () {
       await tracer.startActiveSpan(endPoint, async (requestSpan) => {
         try {
-          const returnValue = method.apply(this, arguments);
-          if (returnValue instanceof Promise) {
-            (async () => {
-              try {
-                await returnValue;
-              } catch (e) {
-                throw new Error(e);
-              }
-            })();
-          }
+          const returnValue = await method.apply(this, arguments);
+          // if (returnValue instanceof Promise) {
+          //   (async () => {
+          //     try {
+          //       await returnValue;
+          //     } catch (e) {
+          //       throw new Error(e);
+          //     }
+          //   })();
+          // }
           return returnValue;
         } catch (e) {
           requestSpan.setAttribute('http.status', 500);
