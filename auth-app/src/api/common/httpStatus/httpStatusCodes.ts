@@ -3,4 +3,5 @@ export const HTTP_STATUS = {
   SERVER_ERROR: 500,
   NOT_FOUND: 404,
   BAD_REQUEST: 400,
+  NOT_AVAILABLE: 503,
 };

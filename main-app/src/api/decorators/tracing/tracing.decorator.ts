@@ -15,6 +15,7 @@ function traceRequest(endPoint: string) {
         } catch (e) {
           requestSpan.setAttribute('http.status', 500);
           requestSpan.recordException(`${(e as Error).message}`);
+          throw e;
         } finally {
           requestSpan.end();
         }

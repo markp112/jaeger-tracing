@@ -10,7 +10,7 @@ class PostsService {
       return await this.repository.fetch();
     } catch (error) {
       logger.error(`errored in fetchPosts`, (error as Error).message);
-      throw new Error('I have been hiding down here !');
+      throw error;
     }
   }
 }
