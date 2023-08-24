@@ -16,6 +16,7 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
   logger.child({ name: 'Posts' });
   const postApi = new PostApi();
   const postResult = await postApi.getPosts();
+  logger.info(`post result ${JSON.stringify(postResult)}`);
   res.status(200).send(postResult);
 
   // await tracer.startActiveSpan('Get posts/', async (requestSpan) => {
