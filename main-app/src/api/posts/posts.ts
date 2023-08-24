@@ -15,7 +15,9 @@ const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 postsRouter.get(getPath(''), async (req: Request, res: Response) => {
   logger.child({ name: 'Posts' });
   const postApi = new PostApi();
-  return await postApi.getPosts();
+  const postResult = await postApi.getPosts();
+  res.status(200).send(postResult);
+
   // await tracer.startActiveSpan('Get posts/', async (requestSpan) => {
   //   try {
   //     const baseUrl = new Config.AuthUrl().getUrl();
