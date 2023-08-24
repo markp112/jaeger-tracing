@@ -18,6 +18,7 @@ class PostApi {
     const baseUrl = new Config.AuthUrl().getUrl();
     const postsService = new PostsService(new PostsRepository(baseUrl));
     const postResult: PostType[] = await postsService.fetchPosts();
+    logger.info(`post result ${JSON.stringify(postResult)}`);
     if (postResult) {
       const result: Result = {
         count: postResult.length,

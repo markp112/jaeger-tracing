@@ -8,7 +8,7 @@ function traceRequest(endPoint: string) {
   ) {
     let method = descriptor.value;
     descriptor.value = async function () {
-      await tracer.startActiveSpan(endPoint, async (requestSpan) => {
+      return await tracer.startActiveSpan(endPoint, async (requestSpan) => {
         try {
           const returnValue = await method.apply(this, arguments);
           // if (returnValue instanceof Promise) {
