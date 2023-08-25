@@ -20,7 +20,30 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
     logger.info(`post result ${JSON.stringify(postResult)}`);
     res.status(200).send(postResult);
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).json(err);
+  }
+});
+
+postsRouter.get(getPath('no-trace'), async (req: Request, res: Response) => {
+  req.log.child({ name: 'Posts' });
+  req.log.info('no-trace called');
+  try {
+    const baseUrl = new Config.AuthUrl().getUrl();
+    const postsService = new PostsService(new PostsRepository(baseUrl));
+    const postResult: PostType[] = await postsService.fetchPosts();
+    if (postResult) {
+      const result = {
+        count: postResult.length,
+        firstRecord: postResult[0],
+        lastRecord: postResult[postResult.length - 1],
+      };
+      res.status(200).send(result);
+    } else {
+      res.status(200).send('result is undefined');
+    }
+  } catch (e) {
+    logger.error(`error caught ->> ${(e as Error).message}`);
+    res.status(500).json({ error: 500, details: `${(e as Error).message}` });
   }
 });
 
