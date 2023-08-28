@@ -18,6 +18,7 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
   // const name = req.query?.name;
   try {
     const postApi = new PostApi();
+    // req.headers[]
     const postResult = await postApi.getPosts();
     logger.info(`post result ${JSON.stringify(postResult)}`);
     res.status(200).send(postResult);
