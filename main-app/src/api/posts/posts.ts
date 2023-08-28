@@ -1,4 +1,3 @@
-import { tracer } from '../../tracing';
 import { PostsService } from '@core/service/posts/posts.service';
 import { logger } from '@logger/logger';
 import { PostsRepository } from '@repository/posts/posts.repository';
@@ -6,6 +5,7 @@ import { Config } from '../../config/config';
 import express, { Request, Response } from 'express';
 import { PostType } from '@model/posts/posts.model';
 import { PostApi } from './post.api';
+import { histogram } from 'prometheus/promClient';
 
 const postsRouter = express.Router();
 const ROUTE_PATH = '/posts';
@@ -14,6 +14,8 @@ const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 
 postsRouter.get(getPath(''), async (req: Request, res: Response) => {
   logger.child({ name: 'Posts' });
+  const end = histogram.startTimer();
+  const name = req.query?.name;
   try {
     const postApi = new PostApi();
     const postResult = await postApi.getPosts();
@@ -22,6 +24,13 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json(err);
   }
+  res.on('finish', () =>
+    end({
+      method: req.method,
+      handler: new URL(req.url, `http://${req.hostname}`).pathname,
+      code: res.statusCode,
+    })
+  );
 });
 
 postsRouter.get(getPath('no-trace'), async (req: Request, res: Response) => {
