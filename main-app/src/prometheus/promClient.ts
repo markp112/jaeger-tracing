@@ -1,5 +1,5 @@
 import * as client from 'prom-client';
-import promBundle from 'express-prom-bundle';
+// import promBundle from 'express-prom-bundle';
 // enable prom-client to expose default application metrics
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
