@@ -5,7 +5,7 @@ import { Config } from '../../config/config';
 import express, { Request, Response } from 'express';
 import { PostType } from '@model/posts/posts.model';
 import { PostApi } from './post.api';
-import { histogram } from 'prometheus/promClient';
+// import { histogram } from 'prometheus/promClient';
 
 const postsRouter = express.Router();
 const ROUTE_PATH = '/posts';
@@ -14,7 +14,7 @@ const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 
 postsRouter.get(getPath(''), async (req: Request, res: Response) => {
   logger.child({ name: 'Posts' });
-  const end = histogram.startTimer();
+  // const end = histogram.startTimer();
   const name = req.query?.name;
   try {
     const postApi = new PostApi();
