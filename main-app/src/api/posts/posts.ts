@@ -15,7 +15,7 @@ const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 postsRouter.get(getPath(''), async (req: Request, res: Response) => {
   logger.child({ name: 'Posts' });
   // const end = histogram.startTimer();
-  const name = req.query?.name;
+  // const name = req.query?.name;
   try {
     const postApi = new PostApi();
     const postResult = await postApi.getPosts();
@@ -24,13 +24,13 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json(err);
   }
-  res.on('finish', () =>
-    end({
-      method: req.method,
-      handler: new URL(req.url, `http://${req.hostname}`).pathname,
-      code: res.statusCode,
-    })
-  );
+  // res.on('finish', () =>
+  //   end({
+  //     method: req.method,
+  //     handler: new URL(req.url, `http://${req.hostname}`).pathname,
+  //     code: res.statusCode,
+  //   })
+  // );
 });
 
 postsRouter.get(getPath('no-trace'), async (req: Request, res: Response) => {
