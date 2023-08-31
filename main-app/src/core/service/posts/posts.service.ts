@@ -11,6 +11,13 @@ class PostsService {
     const tracer = trace.getTracer('Posts-Service');
     return await tracer.startActiveSpan('fetchPosts', async (span: Span) => {
       try {
+        const currentSpan = trace.getActiveSpan();
+        currentSpan.setAttribute('requestId', 101);
+        currentSpan.addEvent('event_data', {
+          key: '123',
+          request: 'get',
+          id: '98e73',
+        });
         const result = await this.repository.fetch();
         return result;
       } catch (error) {
