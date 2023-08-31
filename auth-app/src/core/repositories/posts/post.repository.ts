@@ -15,12 +15,13 @@ class PostRepository implements PostRepo {
     try {
       return await this.client.post.findMany();
     } catch (err) {
+      const errMsg = `Request failed: ${
+        (err as PrismaClientInitializationError).message
+      }`;
       logger.error(
-        `Request failed: code: ${
-          (err as PrismaClientInitializationError).errorCode
-        } mesg: ${(err as PrismaClientInitializationError).message}`
+        `Request failed: ${(err as PrismaClientInitializationError).message}`
       );
-      throw new Error((err as PrismaClientInitializationError).message);
+      throw new Error(errMsg);
     }
   }
 }

@@ -25,14 +25,13 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
       };
       res.status(HTTP_STATUS.OK).send(JSON.stringify(resp));
     } catch (err) {
-      logger.error(
-        `Error returned from service: --> ${(err as Error).message}`
-      );
-      requestSpan.setAttribute('http.status', (err as Error).message);
-      requestSpan.setAttribute('authApp.error', (err as Error).message);
-      res.status(HTTP_STATUS.SERVER_ERROR).json({
-        error: HTTP_STATUS.SERVER_ERROR,
-        details: (err as Error).message,
+      const errMsg = (err as Error).message;
+      logger.error(`Error returned from service: --> ${errMsg}`);
+      requestSpan.setAttribute('http.status', HTTP_STATUS.NOT_AVAILABLE);
+      requestSpan.recordException(errMsg);
+      res.status(HTTP_STATUS.NOT_AVAILABLE).json({
+        error: HTTP_STATUS.NOT_AVAILABLE,
+        details: errMsg,
       });
     } finally {
       requestSpan.end();

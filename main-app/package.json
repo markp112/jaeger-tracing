@@ -57,10 +57,12 @@
     "axios": "^1.4.0",
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
+    "express-prom-bundle": "^6.6.0",
     "pino": "^8.15.0",
     "pino-http": "^8.4.0",
     "pino-pretty": "^10.2.0",
     "prisma": "5.1.1",
+    "prom-client": "^14.2.0",
     "uuid": "^9.0.0"
   }
 }
