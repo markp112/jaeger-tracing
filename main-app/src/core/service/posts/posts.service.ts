@@ -8,7 +8,7 @@ class PostsService {
   constructor(private repository: PostsInterface) {}
 
   async fetchPosts(): Promise<PostType[]> {
-    const tracer = trace.getTracer('Posts-Service');
+    const tracer = trace.getTracer('posts.Service');
     return await tracer.startActiveSpan('fetchPosts', async (span: Span) => {
       try {
         const currentSpan = trace.getActiveSpan();

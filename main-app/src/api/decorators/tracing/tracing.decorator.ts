@@ -9,7 +9,6 @@ function traceRequest(endPoint: string) {
     let method = descriptor.value;
     descriptor.value = async function () {
       return await tracer.startActiveSpan(endPoint, async (requestSpan) => {
-        requestSpan.setAttribute('requestId', '1');
         try {
           const returnValue = await method.apply(this, arguments);
           return returnValue;

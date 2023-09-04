@@ -18,16 +18,11 @@ app.use(metricsMiddleware);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use(authRouter);
+app.use(postsRouter);
+
 app.get('/', (req, res) => {
   res.status(200).send('Hello World!');
 });
-
-// app.get('/metrics', async (req, res) => {
-//   res.set('Content-Type', client.register.contentType);
-//   res.send(await client.register.metrics());
-// });
-
-app.use(authRouter);
-app.use(postsRouter);
 
 export { app };
