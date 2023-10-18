@@ -44,7 +44,7 @@ postsRouter.get(getPath('posts-1'), async (req: Request, res: Response) => {
   await tracer.startActiveSpan('Get /posts', async (requestSpan) => {
     try {
       const postService = new PostOneService(
-        new PostsOneRepository('http://localhost:3000')
+        new PostsOneRepository('http://main-app:3000')
       );
       const posts = await postService.fetchPosts('posts/post-2');
       logger.info(`posts retrieved -->${JSON.stringify(posts)}`);
