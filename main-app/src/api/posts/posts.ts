@@ -11,19 +11,8 @@ const ROUTE_PATH = '/posts';
 
 const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 
-postsRouter.get(getPath(''), async (req: Request, res: Response) => {
-  logger.child({ name: 'Posts' });
-  try {
-    const postApi = new PostApi();
-    const postResult = await postApi.getPosts();
-    logger.info(`post result ${JSON.stringify(postResult)}`);
-    res.status(200).send(postResult);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-postsRouter.get(getPath('/post-1'), async (req: Request, res: Response) => {
-  logger.child({ name: 'Posts' });
+postsRouter.get(getPath('post-1'), async (req: Request, res: Response) => {
+  logger.child({ name: 'Posts-1' });
   try {
     const postApi = new PostApi();
     const postResult = await postApi.getPostsOne();
@@ -34,7 +23,19 @@ postsRouter.get(getPath('/post-1'), async (req: Request, res: Response) => {
   }
 });
 
-postsRouter.get(getPath('/post-2'), async (req: Request, res: Response) => {
+postsRouter.get(getPath('post-2'), async (req: Request, res: Response) => {
+  logger.child({ name: 'Posts' });
+  try {
+    const postApi = new PostApi();
+    const postResult = await postApi.getPosts();
+    logger.info(`post result ${JSON.stringify(postResult)}`);
+    res.status(200).send(postResult);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+postsRouter.get(getPath(''), async (req: Request, res: Response) => {
   logger.child({ name: 'Posts' });
   try {
     const postApi = new PostApi();
@@ -47,7 +48,7 @@ postsRouter.get(getPath('/post-2'), async (req: Request, res: Response) => {
 });
 
 postsRouter.get(getPath('no-trace'), async (req: Request, res: Response) => {
-  req.log.child({ name: 'Posts' });
+  req.log.child({ name: 'no-trace' });
   req.log.info('no-trace called');
   try {
     const baseUrl = new Config.AuthUrl().getUrl();
