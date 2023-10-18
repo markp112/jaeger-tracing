@@ -5,10 +5,7 @@ import { tracer } from '../../tracing';
 import { HTTP_STATUS } from '../common/httpStatus/httpStatusCodes';
 import { PostOneService, PostService } from '@core/services/posts/post.service';
 import { PostRepository } from '@core/repositories/posts/post.repository';
-import {
-  ApiRepository,
-  PostsOneRepository,
-} from '@core/repositories/posts/postsOne.repository';
+import { PostsOneRepository } from '@core/repositories/posts/postsOne.repository';
 
 const postsRouter = express.Router();
 const ROUTE_PATH = '/posts';

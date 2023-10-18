@@ -1,5 +1,5 @@
 import { logger } from '@logger/logger';
-import { AppDataSource } from 'typeorm/dataSource/dataSource';
+// import { AppDataSource } from 'typeorm/dataSource/dataSource';
 import { AircraftEntity } from 'typeorm/entities/aircraft';
 import { trace } from '@opentelemetry/api';
 import { Repository } from 'typeorm';
