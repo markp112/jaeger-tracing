@@ -5,7 +5,7 @@ import { logger } from './logger/logger';
 import bodyParser from 'body-parser';
 import { authRouter } from './api/auth/auth';
 import { postsRouter } from '@api/posts/posts';
-import { AppDataSource } from 'typeorm/dataSource/dataSource';
+// import { AppDataSource } from './typeorm/dataSource/dataSource';
 
 const app = express();
 app.use(
@@ -15,7 +15,7 @@ app.use(
   })
 );
 
-AppDataSource;
+// AppDataSource;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
