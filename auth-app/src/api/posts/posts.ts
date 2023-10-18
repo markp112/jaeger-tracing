@@ -46,7 +46,7 @@ postsRouter.get(getPath('posts-1'), async (req: Request, res: Response) => {
       const postService = new PostOneService(
         new PostsOneRepository('http://localhost:3000')
       );
-      const posts = await postService.fetchPosts('posts');
+      const posts = await postService.fetchPosts('posts/post-2');
       logger.info(`posts retrieved -->${JSON.stringify(posts)}`);
       requestSpan.setAttribute('http.status', HTTP_STATUS.OK);
       const resp = {
