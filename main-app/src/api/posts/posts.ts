@@ -5,37 +5,50 @@ import { Config } from '../../config/config';
 import express, { Request, Response } from 'express';
 import { PostType } from '@model/posts/posts.model';
 import { PostApi } from './post.api';
-// import { histogram } from 'prometheus/promClient';
 
 const postsRouter = express.Router();
 const ROUTE_PATH = '/posts';
 
 const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 
-postsRouter.get(getPath(''), async (req: Request, res: Response) => {
-  logger.child({ name: 'Posts' });
-  // const end = histogram.startTimer();
-  // const name = req.query?.name;
+postsRouter.get(getPath('post-1'), async (req: Request, res: Response) => {
+  logger.child({ name: 'Posts-1' });
   try {
     const postApi = new PostApi();
-    // req.headers[]
+    const postResult = await postApi.getPostsOne();
+    logger.info(`post result ${JSON.stringify(postResult)}`);
+    res.status(200).send(postResult);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+postsRouter.get(getPath('post-2'), async (req: Request, res: Response) => {
+  logger.child({ name: 'Posts' });
+  try {
+    const postApi = new PostApi();
     const postResult = await postApi.getPosts();
     logger.info(`post result ${JSON.stringify(postResult)}`);
     res.status(200).send(postResult);
   } catch (err) {
     res.status(500).json(err);
   }
-  // res.on('finish', () =>
-  //   end({
-  //     method: req.method,
-  //     handler: new URL(req.url, `http://${req.hostname}`).pathname,
-  //     code: res.statusCode,
-  //   })
-  // );
+});
+
+postsRouter.get(getPath(''), async (req: Request, res: Response) => {
+  logger.child({ name: 'Posts' });
+  try {
+    const postApi = new PostApi();
+    const postResult = await postApi.getPosts();
+    logger.info(`post result ${JSON.stringify(postResult)}`);
+    res.status(200).send(postResult);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 postsRouter.get(getPath('no-trace'), async (req: Request, res: Response) => {
-  req.log.child({ name: 'Posts' });
+  req.log.child({ name: 'no-trace' });
   req.log.info('no-trace called');
   try {
     const baseUrl = new Config.AuthUrl().getUrl();

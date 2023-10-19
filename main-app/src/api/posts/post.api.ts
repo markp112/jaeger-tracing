@@ -28,6 +28,23 @@ class PostApi {
       return result;
     }
   }
+
+  @traceRequest('get posts/post-1')
+  async getPostsOne(): Promise<Result> {
+    logger.info('posts Api called');
+    const baseUrl = new Config.AuthUrl().getUrl();
+    const postsService = new PostsService(new PostsRepository(baseUrl));
+    const postResult: PostType[] = await postsService.fetchPostsOne();
+    logger.info(`post result ${JSON.stringify(postResult)}`);
+    if (postResult) {
+      const result: Result = {
+        count: postResult.length,
+        firstRecord: postResult[0],
+        lastRecord: postResult[postResult.length - 1],
+      };
+      return result;
+    }
+  }
 }
 
 export { PostApi };

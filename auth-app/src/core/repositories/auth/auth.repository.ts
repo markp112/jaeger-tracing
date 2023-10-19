@@ -15,7 +15,6 @@ class AuthRepository implements Authentication {
   constructor(private client: PrismaClient) {}
 
   async login(credentials: Credential, waitDelay: number): Promise<UserType> {
-    logger.info(credentials);
     await delay(waitDelay);
     try {
       const user = await this.client.user.findFirst({
