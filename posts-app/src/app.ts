@@ -3,8 +3,7 @@ import express from 'express';
 import pinoHttp from 'pino-http';
 import { logger } from './logger/logger';
 import bodyParser from 'body-parser';
-import { authRouter } from './api/auth/auth.api';
-import { postsRouter } from '@api/posts/posts';
+import { postsRouter } from '@api/posts/posts.api';
 import { HttpStatusCode } from 'axios';
 
 const app = express();
@@ -17,8 +16,6 @@ app.use(
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-app.use(authRouter);
 app.use(postsRouter);
 
 app.get('/', async (req, res) => {

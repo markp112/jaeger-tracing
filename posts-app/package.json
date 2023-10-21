@@ -1,5 +1,5 @@
 {
-  "name": "user-auth",
+  "name": "posts-auth",
   "version": "1.0.0",
   "main": "server.js",
   "nodemonConfig": {

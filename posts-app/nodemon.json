@@ -1,0 +1,7 @@
+{
+  "ext": "ts",
+  "execMap": {
+      "ts": "ts-node"
+  },
+  "exec": "ts-node --require tsconfig-paths/register"
+}

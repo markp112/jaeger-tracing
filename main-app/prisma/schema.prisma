@@ -19,6 +19,7 @@ model Post {
 }
 
 model User {
-  id    String @id
-  username  String
+  id       String @id
+  username String
+  Post     Post[]
 }
