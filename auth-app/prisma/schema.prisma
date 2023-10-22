@@ -32,6 +32,7 @@ model Permission {
 
 model Post {
   id   String   @id
+  userId string 
   post String
   date DateTime
 }
