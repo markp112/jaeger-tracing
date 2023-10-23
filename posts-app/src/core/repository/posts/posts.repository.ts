@@ -14,15 +14,8 @@ export class PostsRepository implements PostRepo {
     logger.info('Post repository fetch called');
     try {
       return await this.client.post.findMany({
-        include: {
-          userPost: false,
-        },
         where: {
-          userPost: {
-            every: {
-              userId: userId,
-            },
-          },
+          userId: userId,
         },
       });
     } catch (err) {
