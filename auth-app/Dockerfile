@@ -25,8 +25,8 @@ RUN echo ${URL} > ./.env
 RUN npx prisma generate
 
 RUN npm run build
-RUN npx prisma migrate save --name initial --experimental
-RUN npx prisma migrate up --experimental
+# RUN npx prisma migrate save --name initial --experimental
+# RUN npx prisma migrate up --experimental
 
 EXPOSE 3010
 

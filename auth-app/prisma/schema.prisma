@@ -31,8 +31,8 @@ model Permission {
 }
 
 model Post {
-  id   String   @id
-  userId string 
-  post String
-  date DateTime
+  id     String   @id
+  userId String
+  post   String
+  date   DateTime
 }

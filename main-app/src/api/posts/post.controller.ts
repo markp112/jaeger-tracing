@@ -45,7 +45,7 @@ export class PostController {
       const user = await this.authService.getUser(userName);
       const userPermission = await this.getUserPermissions(user);
       const result = await this.getPosts(userPermission);
-      if (typeof result.data !== 'string') {
+      if (this.isAuthorised(result.data)) {
         res.status(HttpStatusCode.Ok).send(result);
       } else {
         res.status(HttpStatusCode.Unauthorized).send(result);
@@ -62,8 +62,7 @@ export class PostController {
   static async getAllPosts(req: Request, res: Response): Promise<void> {
     logger.info('getAllPosts Called');
     try {
-      const baseUrl = new Config.AuthUrl().getUrl();
-      const postsService = new PostsService(new PostsRepository(baseUrl));
+      const postsService = new PostsService(new PostsRepository(this.authUrl));
       const postResult: PostType[] = await postsService.fetchAllPosts();
       logger.info(`post result ${JSON.stringify(postResult)}`);
       res
@@ -139,5 +138,9 @@ export class PostController {
         `user: ${permission.userId} is not authorised`
       );
     }
+  }
+
+  private static isAuthorised(data: string | PostType[]): boolean {
+    return typeof data !== 'string';
   }
 }
