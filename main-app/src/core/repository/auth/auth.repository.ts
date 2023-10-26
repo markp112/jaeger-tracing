@@ -21,6 +21,7 @@ class AuthRepository implements Authentication {
     try {
       logger.info(this.axiosClient.getUri(), 'uri');
       const result = await this.axiosClient.get(`/auth/user/${userName}`);
+      logger.info(`-->${(result.data as UserType).id}`);
       return result.data as UserType;
     } catch (error) {
       logger.error(error);
