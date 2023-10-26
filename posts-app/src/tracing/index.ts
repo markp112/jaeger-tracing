@@ -1,4 +1,4 @@
 import { initializeTracing } from './tracing';
-const tracer = initializeTracing('auth-app', 'test');
+const tracer = initializeTracing('post-app', 'local host');
 
 export { tracer };

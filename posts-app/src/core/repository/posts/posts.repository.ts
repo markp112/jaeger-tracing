@@ -5,19 +5,34 @@ import { PrismaClientInitializationError } from '@prisma/client/runtime/library'
 
 interface PostRepo {
   getUserPosts(userId: string): Promise<PostType[]>;
+  getAllPosts(): Promise<PostType[]>;
 }
 
 export class PostsRepository implements PostRepo {
   constructor(private client: PrismaClient) {}
 
   async getUserPosts(userId: string): Promise<PostType[]> {
-    logger.info('Post repository fetch called');
+    logger.info('Post repository getUserPosts called');
     try {
       return await this.client.post.findMany({
         where: {
           userId: userId,
         },
       });
+    } catch (err) {
+      logger.error(
+        `Request failed: code: ${
+          (err as PrismaClientInitializationError).errorCode
+        } mesg: ${(err as PrismaClientInitializationError).message}`
+      );
+      throw new Error((err as PrismaClientInitializationError).message);
+    }
+  }
+
+  async getAllPosts(): Promise<PostType[]> {
+    logger.info('Post repository getAllPosts called');
+    try {
+      return await this.client.post.findMany();
     } catch (err) {
       logger.error(
         `Request failed: code: ${

@@ -7,4 +7,8 @@ export class PostsService {
   async getUserPosts(userId: string): Promise<Post[]> {
     return await this.repository.getUserPosts(userId);
   }
+
+  async getAllPosts() {
+    return await this.repository.getAllPosts();
+  }
 }
