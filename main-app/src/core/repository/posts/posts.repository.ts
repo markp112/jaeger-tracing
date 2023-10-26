@@ -18,6 +18,9 @@ class PostsRepository implements PostsInterface {
 
   async fetch(route: string): Promise<PostType[]> {
     try {
+      logger.info(
+        `repository: posts - baseUrl = ${this.baseUrl} and route = ${route}`
+      );
       const result = await this.axiosClient.get(route, {
         headers: {
           'Content-Type': 'appplication/json',
