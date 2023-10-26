@@ -1,0 +1,18 @@
+import { PostController } from '@api/posts/post.controller';
+import { AuthService } from '@core/service/auth/auth.service';
+import { PostsService } from '@core/service/posts/posts.service';
+import { AuthRepository } from '@repository/auth/auth.repository';
+import { PostsRepository } from '@repository/posts/posts.repository';
+import { Config } from '../config/config';
+
+function initialiseServices() {
+  const authUrl = new Config.AuthUrl().getUrl();
+  const postUrl = new Config.PostUrl().getUrl();
+  const postsService = new PostsService(new PostsRepository(postUrl));
+  const authService = new AuthService(new AuthRepository(authUrl));
+  const postController = new PostController(authService, postsService);
+
+  return { postController };
+}
+
+export { initialiseServices };

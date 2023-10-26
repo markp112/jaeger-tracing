@@ -16,7 +16,7 @@
     "ext": "ts, js"
   },
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node ./dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/server.ts | npx pino-pretty",
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist"

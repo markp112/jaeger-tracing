@@ -1,12 +1,14 @@
 import { Request, Response } from 'express';
 import { traceRequest } from '@api/decorators/tracing/tracing.decorator';
-import { PostsService } from '@core/service/posts/posts.service';
+import {
+  PostsService,
+  PostsServiceInterface,
+} from '@core/service/posts/posts.service';
 import { PostType } from '@model/posts/posts.model';
 import { PostsRepository } from '@repository/posts/posts.repository';
 import { Config } from '../../config/config';
 import { logger } from '@logger/logger';
-import { AuthService } from '@core/service/auth/auth.service';
-import { AuthRepository } from '@repository/auth/auth.repository';
+import { Authentication } from '@repository/auth/auth.repository';
 import { UserPermission, UserType } from '@model/auth/auth.model';
 import { HttpStatusCode } from 'axios';
 
@@ -18,16 +20,19 @@ type Result<T> = {
 const ERROR_MESSAGE = 'request failed';
 
 export class PostController {
-  private static authUrl = new Config.AuthUrl().getUrl();
-  private static postUrl = new Config.PostUrl().getUrl();
-  private static postsService = new PostsService(
-    new PostsRepository(this.postUrl)
-  );
-  private static authService = new AuthService(
-    new AuthRepository(this.authUrl)
-  );
-  private static getResult<T>(data: T): Result<T> {
+  constructor(
+    private authService: Authentication,
+    private postsService: PostsServiceInterface
+  ) {}
+
+  private getResult<T>(data: T): Result<T> {
     let records = 1;
+    if (!data) {
+      return {
+        count: records,
+        data: undefined,
+      };
+    }
     if (Array.isArray(data)) {
       records = data.length;
     }
@@ -38,7 +43,7 @@ export class PostController {
   }
 
   @traceRequest('posts/:username')
-  static async getUserPosts(req: Request, res: Response): Promise<void> {
+  async getUserPosts(req: Request, res: Response): Promise<void> {
     logger.child({ name: 'getUserPosts' });
     try {
       const userName = req.params.userName;
@@ -59,11 +64,10 @@ export class PostController {
   }
 
   @traceRequest('get posts')
-  static async getAllPosts(req: Request, res: Response): Promise<void> {
+  async getAllPosts(req: Request, res: Response): Promise<void> {
     logger.info('getAllPosts Called');
     try {
-      const postsService = new PostsService(new PostsRepository(this.authUrl));
-      const postResult: PostType[] = await postsService.fetchAllPosts();
+      const postResult: PostType[] = await this.postsService.fetchAllPosts();
       logger.info(`post result ${JSON.stringify(postResult)}`);
       res
         .status(HttpStatusCode.Ok)
@@ -77,12 +81,10 @@ export class PostController {
   }
 
   @traceRequest('getRoundTripPosts')
-  static async getRoundTripPosts(req: Request, res: Response): Promise<void> {
+  async getRoundTripPosts(req: Request, res: Response): Promise<void> {
     logger.info('getRoundTripPosts called');
     try {
-      const baseUrl = new Config.AuthUrl().getUrl();
-      const postsService = new PostsService(new PostsRepository(baseUrl));
-      const postResult: PostType[] = await postsService.fetchPostsOne();
+      const postResult: PostType[] = await this.postsService.fetchPostsOne();
       logger.info(`post result ${JSON.stringify(postResult)}`);
       if (postResult) {
         res
@@ -97,7 +99,7 @@ export class PostController {
     }
   }
 
-  static async noTrace(req: Request, res: Response): Promise<void> {
+  async noTrace(req: Request, res: Response): Promise<void> {
     req.log.child({ name: 'no-trace' });
     req.log.info('no-trace called');
     try {
@@ -117,9 +119,7 @@ export class PostController {
     }
   }
 
-  private static async getUserPermissions(
-    user: UserType
-  ): Promise<UserPermission> {
+  private async getUserPermissions(user: UserType): Promise<UserPermission> {
     const permission: UserPermission = {
       userId: user.id,
       permission: 'read-posts',
@@ -127,7 +127,7 @@ export class PostController {
     return await this.authService.getUserPermissions(permission);
   }
 
-  private static async getPosts(
+  private async getPosts(
     permission: UserPermission
   ): Promise<Result<PostType[] | string>> {
     if (permission.isGranted) {
@@ -140,7 +140,7 @@ export class PostController {
     }
   }
 
-  private static isAuthorised(data: string | PostType[]): boolean {
+  private isAuthorised(data: string | PostType[]): boolean {
     return typeof data !== 'string';
   }
 }
