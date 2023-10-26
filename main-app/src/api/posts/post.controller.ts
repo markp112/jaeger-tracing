@@ -63,7 +63,7 @@ export class PostController {
     }
   }
 
-  @traceRequest('get posts')
+  @traceRequest('getAllPosts')
   async getAllPosts(req: Request, res: Response): Promise<void> {
     logger.info('getAllPosts Called');
     try {

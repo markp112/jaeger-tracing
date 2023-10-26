@@ -13,23 +13,24 @@ class PostsRepository implements PostsInterface {
     this.axiosClient = axios.create({
       baseURL: this.baseUrl,
       timeout: 6000,
+      headers: {
+        'Content-Type': 'appplication/json',
+        Accept: 'application/json',
+      },
     });
   }
 
   async fetch(route: string): Promise<PostType[]> {
     try {
       logger.info(
-        `repository: posts - baseUrl = ${this.baseUrl} and route = ${route}`
+        `repository: posts - baseUrl = ${
+          this.baseUrl
+        } and route = ${route}, and axios baseUrl -> ${this.axiosClient.getUri()}`
       );
-      const result = await this.axiosClient.get(route, {
-        headers: {
-          'Content-Type': 'appplication/json',
-          Accept: 'application/json',
-        },
-      });
+      const result = await this.axiosClient.get(route);
       return result.data.data as PostType[];
     } catch (error) {
-      logger.error(`Error from posts call${error}`);
+      logger.error(`Error from posts call -> ${error}`);
       throw new Error(error);
     }
   }

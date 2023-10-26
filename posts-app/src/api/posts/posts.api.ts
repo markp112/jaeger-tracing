@@ -6,7 +6,7 @@ const ROUTE_PATH = '/posts';
 
 const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 
+postsRouter.get(getPath(''), PostsController.getAllPosts.bind(PostsController));
 postsRouter.get(getPath(':userId/:permission'), PostsController.getUserPosts);
-postsRouter.get(getPath(''), PostsController.getAllPosts);
 
 export { postsRouter };
