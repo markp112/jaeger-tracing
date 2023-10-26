@@ -1,30 +1,25 @@
 import { Request, Response } from 'express';
 import { traceRequest } from '@api/tracing/decorators';
 import { logger } from '../../logger/logger';
-import { PrismaClient } from '@prisma/client';
-import { Config } from '@api/config/config';
 import { HttpStatusCode } from 'axios';
-import { AuthService } from '@core/services/auth/auth.service';
-import { AuthRepository } from '@core/repository/auth/auth.repository';
+import { Authentication } from '@core/repository/auth/auth.repository';
 import { UserPermission } from '@core/services/models/auth/auth.model';
-import { PostsRepository } from '@core/repository/posts/posts.repository';
-import { PostsService } from '@core/services/posts/posts.service';
-import { trace } from '@opentelemetry/api';
+import { PostsServiceInterface } from '@core/services/posts/posts.service';
 
 type Result<T> = {
   count: number;
   data: T;
 };
 
-export class PostsController {
-  private static prismaClient = new PrismaClient();
-  private static postsService = new PostsService(
-    new PostsRepository(this.prismaClient)
-  );
-  private static uri = new Config.AuthUrl().getUrl();
-  private static authService = new AuthService(new AuthRepository(this.uri));
+const ERROR_MESSAGE = 'request failed';
 
-  private static getResult<T>(data: T): Result<T> {
+export class PostsController {
+  constructor(
+    private authService: Authentication,
+    private postsService: PostsServiceInterface
+  ) {}
+
+  private getResult<T>(data: T): Result<T> {
     let records = 1;
     if (Array.isArray(data)) {
       records = data.length;
@@ -36,8 +31,8 @@ export class PostsController {
   }
 
   @traceRequest('/posts/:userId/:permission')
-  static async getUserPosts(req: Request, res: Response): Promise<void> {
-    logger.info(`${req.originalUrl} - called`);
+  async getUserPosts(req: Request, res: Response): Promise<void> {
+    logger.info(`${req} - called`);
     try {
       const userPermission: UserPermission = {
         userId: req.params.userId,
@@ -54,20 +49,24 @@ export class PostsController {
       }
       res.status(HttpStatusCode.NotFound).send();
     } catch (err) {
-      const error = JSON.stringify(err);
-      res.status(HttpStatusCode.InternalServerError).send(error);
+      logger.error(err);
+      res
+        .status(HttpStatusCode.InternalServerError)
+        .send(this.getResult<string>(ERROR_MESSAGE));
     }
   }
 
   @traceRequest('/posts')
-  static async getAllPosts(req: Request, res: Response): Promise<void> {
-    logger.info(`${req.originalUrl} - called`);
+  async getAllPosts(req: Request, res: Response): Promise<void> {
+    logger.info(`${res} - res called`);
     try {
       const posts = await this.postsService.getAllPosts();
       res.status(HttpStatusCode.Ok).send(this.getResult(posts));
     } catch (err) {
-      const error = JSON.stringify(err);
-      res.status(HttpStatusCode.InternalServerError).send(error);
+      logger.error(err);
+      res
+        .status(HttpStatusCode.InternalServerError)
+        .send(this.getResult<string>(ERROR_MESSAGE));
     }
   }
 }

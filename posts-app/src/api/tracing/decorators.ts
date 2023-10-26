@@ -8,11 +8,11 @@ export function traceRequest(endPoint: string) {
     descriptor: PropertyDescriptor
   ) {
     let method = descriptor.value;
-    descriptor.value = async function () {
+    descriptor.value = async function (...args: any[]) {
       return await tracer.startActiveSpan(endPoint, async (requestSpan) => {
         try {
           if (typeof method === 'function') {
-            const returnValue = await method.apply(this, arguments);
+            const returnValue = await method.apply(this, args);
             return returnValue;
           }
         } catch (e) {

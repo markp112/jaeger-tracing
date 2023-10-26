@@ -1,6 +1,7 @@
 import { logger } from '@logger/logger';
 import { PostType } from '@model/posts/posts.model';
 import axios, { Axios } from 'axios';
+import { error } from 'console';
 
 interface PostsInterface {
   fetch(route: string): Promise<PostType[]>;
@@ -31,7 +32,7 @@ class PostsRepository implements PostsInterface {
       return result.data.data as PostType[];
     } catch (error) {
       logger.error(`Error from posts call -> ${error}`);
-      throw new Error(error);
+      throw error;
     }
   }
 }

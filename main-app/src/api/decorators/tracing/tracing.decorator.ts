@@ -3,16 +3,18 @@ import { tracer } from '../../../tracing';
 
 function traceRequest(endPoint: string) {
   return function (
-    target: any,
-    prop: string,
-    descriptor: TypedPropertyDescriptor<Function>
+    target: Object,
+    prop: string | symbol,
+    descriptor: PropertyDescriptor
   ) {
     let method = descriptor.value;
     descriptor.value = async function (...args: any[]) {
       return await tracer.startActiveSpan(endPoint, async (requestSpan) => {
         try {
-          const returnValue = await method.apply(this, args);
-          return returnValue;
+          if (typeof method === 'function') {
+            const returnValue = await method.apply(this, args);
+            return returnValue;
+          }
         } catch (e) {
           logger.error(e);
           requestSpan.setAttribute('http.status', 500);

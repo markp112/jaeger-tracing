@@ -27,12 +27,6 @@ export class PostController {
 
   private getResult<T>(data: T): Result<T> {
     let records = 1;
-    if (!data) {
-      return {
-        count: records,
-        data: undefined,
-      };
-    }
     if (Array.isArray(data)) {
       records = data.length;
     }

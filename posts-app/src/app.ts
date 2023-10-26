@@ -23,7 +23,7 @@ app.get('/', async (req, res) => {
     try {
       logger.info('app running');
       requestSpan.setAttribute('http.status', HttpStatusCode.Ok);
-      res.send('Hello World!');
+      res.send('Hello World from post-app');
     } catch (e) {
       requestSpan.setAttribute(
         'http.status',
@@ -39,7 +39,7 @@ app.get('/', async (req, res) => {
 });
 
 app.use((req, res) => {
-  logger.error(res.statusMessage);
+  logger.error('route not found !!');
   return res.status(HttpStatusCode.NotFound).json({
     message: 'Route not found',
     status: `${HttpStatusCode.NotFound}`,

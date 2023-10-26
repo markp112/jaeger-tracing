@@ -4,6 +4,7 @@ import { initialiseServices } from '../../init/init';
 const postsRouter = express.Router();
 const ROUTE_PATH = '/posts';
 const postController = initialiseServices().postController;
+
 const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 
 postsRouter.get(
