@@ -20,6 +20,7 @@ class AuthRepository implements Authentication {
           username: name,
         },
       });
+      logger.info(`----user from database = ${user}`);
       if (!user) {
         return undefined;
       } else {

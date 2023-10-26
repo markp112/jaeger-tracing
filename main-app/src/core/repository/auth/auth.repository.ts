@@ -34,7 +34,7 @@ class AuthRepository implements Authentication {
     try {
       logger.info(this.axiosClient.getUri(), 'uri');
       const result = await this.axiosClient.get(
-        `/${permission.userId}/${permission.permission}`
+        `auth/user/${permission.userId}/permission/${permission.permission}`
       );
       return result.data as UserPermission;
     } catch (error) {

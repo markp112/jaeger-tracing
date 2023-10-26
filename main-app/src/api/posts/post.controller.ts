@@ -43,6 +43,7 @@ export class PostController {
       const userName = req.params.username;
       logger.info(`---user name ${userName}`);
       const user = await this.authService.getUser(userName);
+      logger.info(`---user --> ${user.id}`);
       const userPermission = await this.getUserPermissions(user);
       const result = await this.getPosts(userPermission);
       if (this.isAuthorised(result.data)) {
