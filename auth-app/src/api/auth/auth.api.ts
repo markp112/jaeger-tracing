@@ -6,10 +6,10 @@ const ROUTE_PATH = '/auth';
 
 const getPath = (pathToAppend: string) => `${ROUTE_PATH}/${pathToAppend}`;
 
-authRouter.get(getPath('user/:name'), AuthApi.getUser);
+authRouter.get(getPath('user/:name'), AuthApi.getUser.bind(AuthApi));
 authRouter.get(
   getPath('user/:id/permission/:permission'),
-  AuthApi.getUserPermission
+  AuthApi.getUserPermission.bind(AuthApi)
 );
 
 export { authRouter };

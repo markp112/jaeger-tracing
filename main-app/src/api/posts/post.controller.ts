@@ -36,11 +36,12 @@ export class PostController {
     };
   }
 
-  @traceRequest('posts/:username')
+  @traceRequest('posts/user/:username')
   async getUserPosts(req: Request, res: Response): Promise<void> {
     logger.child({ name: 'getUserPosts' });
     try {
-      const userName = req.params.userName;
+      const userName = req.params.username;
+      logger.info(`---user name ${userName}`);
       const user = await this.authService.getUser(userName);
       const userPermission = await this.getUserPermissions(user);
       const result = await this.getPosts(userPermission);
