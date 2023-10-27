@@ -41,9 +41,7 @@ export class PostController {
     logger.child({ name: 'getUserPosts' });
     try {
       const userName = req.params.username;
-      logger.info(`---user name ${userName}`);
       const user = await this.authService.getUser(userName);
-      logger.info(`---user --> ${user.id}`);
       const userPermission = await this.getUserPermissions(user);
       const result = await this.getPosts(userPermission);
       if (this.isAuthorised(result.data)) {
@@ -61,10 +59,9 @@ export class PostController {
 
   @traceRequest('getAllPosts')
   async getAllPosts(req: Request, res: Response): Promise<void> {
-    logger.info('getAllPosts Called');
+    logger.info(`${req.originalUrl} -- called`);
     try {
       const postResult: PostType[] = await this.postsService.fetchAllPosts();
-      logger.info(`post result ${JSON.stringify(postResult)}`);
       res
         .status(HttpStatusCode.Ok)
         .send(this.getResult<PostType[]>(postResult));
@@ -78,10 +75,9 @@ export class PostController {
 
   @traceRequest('getRoundTripPosts')
   async getRoundTripPosts(req: Request, res: Response): Promise<void> {
-    logger.info('getRoundTripPosts called');
+    logger.info(`${req.originalUrl} -- called`);
     try {
       const postResult: PostType[] = await this.postsService.fetchPostsOne();
-      logger.info(`post result ${JSON.stringify(postResult)}`);
       if (postResult) {
         res
           .status(HttpStatusCode.Ok)

@@ -20,7 +20,6 @@ class AuthRepository implements Authentication {
           username: name,
         },
       });
-      logger.info(`----user from database = ${user}`);
       if (!user) {
         return undefined;
       } else {
@@ -40,7 +39,7 @@ class AuthRepository implements Authentication {
     requestedPermission: UserPermission
   ): Promise<UserPermission> {
     try {
-      const permissionExists = await this.client.userPermission.findFirst({
+      const permissionExists = await this.client.userPermissions.findFirst({
         include: {
           permission: true,
         },

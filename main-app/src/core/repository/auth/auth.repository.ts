@@ -19,10 +19,8 @@ class AuthRepository implements Authentication {
 
   async getUser(userName: string): Promise<UserType> {
     try {
-      logger.info(this.axiosClient.getUri(), 'uri');
       const result = await this.axiosClient.get(`/auth/user/${userName}`);
-      logger.info(`-->${(result.data as UserType).id}`);
-      return result.data as UserType;
+      return result.data.data as UserType;
     } catch (error) {
       logger.error(error);
       throw error;
@@ -33,11 +31,10 @@ class AuthRepository implements Authentication {
     permission: UserPermission
   ): Promise<UserPermission> {
     try {
-      logger.info(this.axiosClient.getUri(), 'uri');
       const result = await this.axiosClient.get(
         `auth/user/${permission.userId}/permission/${permission.permission}`
       );
-      return result.data as UserPermission;
+      return result.data.data as UserPermission;
     } catch (error) {
       logger.error(error);
       throw error;

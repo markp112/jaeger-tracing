@@ -19,7 +19,6 @@ postsRouter.get(getPath(''), async (req: Request, res: Response) => {
       const prisma = new PrismaClient();
       const postService = new PostService(new PostRepository(prisma));
       const posts = await postService.fetchPosts();
-      logger.info(`posts retrieved -->${JSON.stringify(posts)}`);
       requestSpan.setAttribute('http.status', HttpStatusCode.Ok);
       const resp = {
         status: HttpStatusCode.Ok,
@@ -50,7 +49,6 @@ postsRouter.get(getPath('posts-1'), async (req: Request, res: Response) => {
       const url = new Config.PostUrl().getUrl();
       const postService = new PostOneService(new PostsOneRepository(url));
       const posts = await postService.fetchPosts('posts/post-2');
-      logger.info(`posts retrieved -->${JSON.stringify(posts)}`);
       requestSpan.setAttribute('http.status', HttpStatusCode.Ok);
       const resp = {
         status: HttpStatusCode.Ok,

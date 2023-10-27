@@ -12,7 +12,6 @@ export class PostsRepository implements PostRepo {
   constructor(private client: PrismaClient) {}
 
   async getUserPosts(userId: string): Promise<PostType[]> {
-    logger.info('Post repository getUserPosts called');
     try {
       return await this.client.post.findMany({
         where: {

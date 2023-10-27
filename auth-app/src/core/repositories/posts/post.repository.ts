@@ -11,7 +11,6 @@ class PostRepository implements PostRepo {
   constructor(private client: PrismaClient) {}
 
   async fetch(): Promise<PostType[]> {
-    logger.info('Post repository fetch called');
     try {
       return await this.client.post.findMany();
     } catch (err) {

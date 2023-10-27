@@ -32,7 +32,7 @@ export class PostsController {
 
   @traceRequest('/posts/:userId/:permission')
   async getUserPosts(req: Request, res: Response): Promise<void> {
-    logger.info(`${req} - called`);
+    logger.info(`${req.originalUrl} - called`);
     try {
       const userPermission: UserPermission = {
         userId: req.params.userId,
@@ -58,7 +58,7 @@ export class PostsController {
 
   @traceRequest('/posts')
   async getAllPosts(req: Request, res: Response): Promise<void> {
-    logger.info(`${res} - res called`);
+    logger.info(`${req.originalUrl} - res called`);
     try {
       const posts = await this.postsService.getAllPosts();
       res.status(HttpStatusCode.Ok).send(this.getResult(posts));

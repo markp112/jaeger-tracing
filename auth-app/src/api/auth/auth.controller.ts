@@ -34,7 +34,6 @@ export class AuthApi {
     logger.info(`${req.originalUrl} - called`);
     try {
       const name = req.params.name;
-      logger.info(`-------------name= ${name}`);
       const user: UserType | undefined = await this.authService.getUser(name);
       if (user) {
         const result = this.getResult<UserType>(user);

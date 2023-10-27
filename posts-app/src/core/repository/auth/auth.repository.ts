@@ -21,10 +21,9 @@ export class AuthRepository implements Authentication {
   async getUserPermission(
     requestedPermission: UserPermission
   ): Promise<UserPermission> {
-    logger.info(this.axiosClient.getUri(), 'uri');
     const result = await this.axiosClient.get(
-      `/auth/user/${requestedPermission.userId}/${requestedPermission.permission}`
+      `/auth/user/${requestedPermission.userId}/permission/${requestedPermission.permission}`
     );
-    return result.data as UserPermission;
+    return result.data.data as UserPermission;
   }
 }
