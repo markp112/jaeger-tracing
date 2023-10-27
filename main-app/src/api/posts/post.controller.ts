@@ -11,29 +11,16 @@ import { logger } from '@logger/logger';
 import { Authentication } from '@repository/auth/auth.repository';
 import { UserPermission, UserType } from '@model/auth/auth.model';
 import { HttpStatusCode } from 'axios';
+import { Result, ResultType } from '@api/common/responseResult';
+import { ErrorHandler } from '@api/common/errorHandler';
 
-type Result<T> = {
-  count: number;
-  data: T;
-};
-
-const ERROR_MESSAGE = 'request failed';
-
-export class PostController {
+export class PostController extends Result {
   constructor(
     private authService: Authentication,
-    private postsService: PostsServiceInterface
-  ) {}
-
-  private getResult<T>(data: T): Result<T> {
-    let records = 1;
-    if (Array.isArray(data)) {
-      records = data.length;
-    }
-    return {
-      count: records,
-      data,
-    };
+    private postsService: PostsServiceInterface,
+    private errorHandler: ErrorHandler
+  ) {
+    super();
   }
 
   @traceRequest('posts/user/:username')
@@ -50,10 +37,7 @@ export class PostController {
         res.status(HttpStatusCode.Unauthorized).send(result);
       }
     } catch (err) {
-      logger.error(err);
-      res
-        .status(HttpStatusCode.InternalServerError)
-        .send(this.getResult<string>(ERROR_MESSAGE));
+      this.errorHandler.logAndSendError(err as Error, res);
     }
   }
 
@@ -66,10 +50,7 @@ export class PostController {
         .status(HttpStatusCode.Ok)
         .send(this.getResult<PostType[]>(postResult));
     } catch (err) {
-      logger.error(err);
-      res
-        .status(HttpStatusCode.InternalServerError)
-        .send(this.getResult<string>(ERROR_MESSAGE));
+      this.errorHandler.logAndSendError(err as Error, res);
     }
   }
 
@@ -84,10 +65,7 @@ export class PostController {
           .send(this.getResult<PostType[]>(postResult.slice(0, 10)));
       }
     } catch (err) {
-      logger.error(err);
-      res
-        .status(HttpStatusCode.InternalServerError)
-        .send(this.getResult<string>(ERROR_MESSAGE));
+      this.errorHandler.logAndSendError(err as Error, res);
     }
   }
 
@@ -104,10 +82,7 @@ export class PostController {
           .send(this.getResult<PostType[]>(postResult.slice(0, 10)));
       }
     } catch (err) {
-      logger.error(err);
-      res
-        .status(HttpStatusCode.InternalServerError)
-        .send(this.getResult<string>(ERROR_MESSAGE));
+      this.errorHandler.logAndSendError(err as Error, res);
     }
   }
 
@@ -121,7 +96,7 @@ export class PostController {
 
   private async getPosts(
     permission: UserPermission
-  ): Promise<Result<PostType[] | string>> {
+  ): Promise<ResultType<PostType[] | string>> {
     if (permission.isGranted) {
       const posts = await this.postsService.fetchPosts(permission);
       return this.getResult<PostType[]>(posts);

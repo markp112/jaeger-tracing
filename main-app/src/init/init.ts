@@ -5,6 +5,7 @@ import { AuthRepository } from '@repository/auth/auth.repository';
 import { PostsRepository } from '@repository/posts/posts.repository';
 import { Config } from '../config/config';
 import { logger } from '@logger/logger';
+import { ControllerErrorHandler } from '@api/common/errorHandler';
 
 function initialiseServices() {
   const authUrl = new Config.AuthUrl().getUrl();
@@ -13,7 +14,12 @@ function initialiseServices() {
   logger.info(`authUrl -> ${authUrl}`);
   const postsService = new PostsService(new PostsRepository(postUrl));
   const authService = new AuthService(new AuthRepository(authUrl));
-  const postController = new PostController(authService, postsService);
+  const errorHandler = new ControllerErrorHandler();
+  const postController = new PostController(
+    authService,
+    postsService,
+    errorHandler
+  );
 
   return { postController };
 }

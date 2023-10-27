@@ -21,8 +21,16 @@ The auth service is expects to read a record from a postgre database called 'aut
 
 The database connection is confuigured via the environment variable 'DATABASE_URL' which creates the Prisma database connection when 'npx prisma generate' is run.
 
-## Project Setup
+## Project Setup 
+### Local Setup
+If using a Postgre instance hosted on Openshift, to connect to the database the following steps need to be followed:
+Open terminal in the IDE:
+1) set an environment variable for the DATABASE_URL, this needs to look for the database on localhost in the format of: DATABASE_URL=postgresql://<User>:<Password>@localhost:5432/auth?schema=public
+2) login into the oc console using your oc credentials which are obtained from the oc UI
+3) For localhost to reach the postgres database on OpenShift we need to forward the port to the OpenShift pod running postgres, this can be located via the OpenShift UI and use this in the following command: oc port-foward <podname> 5432 & 
+   1) The "&" is important here as we want the oc command to run in the background.
 
+4) We can now build our application locally and start it
 ### OpenShift
 
 * Login into the Openshift UI as the kubeAdmin and add the following Operator 'Jaeger' provided by Redhat, Accept the defaults and create the Operator, this will take a few minutes to create.
@@ -52,34 +60,6 @@ Once the database is running connect to the database and create a table called U
 DATABASE_URL=postgresql://<User>:<Password>@postgresql:5432/auth?schema=public
 the user and password can be retrieved from the secrets within Openshift.
 
-* Both the main app and auth app should build successfully.
-
-The deployment for auth-app has an optional environment variables:
-* WAIT_DELAY which is used to add delay to the time taken to fetch a record from the database the default value is one second and it is used to for illustrating the effect within Jaeger.
-* JAEGER_END_POINT - defines the end point for sending traces to Jaeger in the form of:
-http://jaeger-all-in-one-inmemory-collector.jaeger.svc:14268/api/traces 
-This is the name of the jaeger service followed by the project name 'jaeger.svc' 
-* PORT - port on which the application is running
-
-The deployment for the main app requires the end point for the auth-service:
-* AUTH_URL - which is the service name of the auth app in the format of http://<service name>:port
-* PORT - port on which the application is running
-
-If everything is working the tracing can be tested by posting to the main-app route:
-
-e.g.
-https://main-app-jaeger.apps-crc.testing/auth/login including the following data in the body:
-{
-userName: 'xxxx'
-password: 'yyyy'
-}
-The values here are not relevent.
-
-All being well the response should include: 
-{ 
-  id: '2'
-  'username': 'test'
-}
-
+* 
 
 

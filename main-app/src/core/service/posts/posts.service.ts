@@ -4,17 +4,19 @@ import type { PostsInterface } from '@repository/posts/posts.repository';
 import { trace } from '@opentelemetry/api';
 import { Span } from '@opentelemetry/sdk-trace-base';
 import { UserPermission } from '@model/auth/auth.model';
+import { captureSpan } from '@api/decorators/tracing/tracing.decorator';
 
 export interface PostsServiceInterface {
   fetchPosts(permission: UserPermission): Promise<PostType[]>;
   fetchAllPosts(): Promise<PostType[]>;
   fetchPostsOne(): Promise<PostType[]>;
 }
+
+captureSpan('PostService');
 export class PostsService {
   constructor(private repository: PostsInterface) {}
 
   async fetchPosts(permission: UserPermission): Promise<PostType[]> {
-    
     const currentSpan = trace.getActiveSpan();
     try {
       if (currentSpan) {
