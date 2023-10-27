@@ -14,6 +14,7 @@ export class PostsService {
   constructor(private repository: PostsInterface) {}
 
   async fetchPosts(permission: UserPermission): Promise<PostType[]> {
+    
     const currentSpan = trace.getActiveSpan();
     try {
       if (currentSpan) {
