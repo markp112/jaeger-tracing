@@ -1,5 +1,4 @@
 import { UserPermission } from '@core/services/models/auth/auth.model';
-import { logger } from '@logger/logger';
 import axios, { Axios } from 'axios';
 
 export interface Authentication {

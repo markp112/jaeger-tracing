@@ -11,14 +11,12 @@ import { logger } from '@logger/logger';
 import { Authentication } from '@repository/auth/auth.repository';
 import { UserPermission, UserType } from '@model/auth/auth.model';
 import { HttpStatusCode } from 'axios';
-import { Result, ResultType } from '@api/common/responseResult';
-import { ErrorHandler } from '@api/common/errorHandler';
+import { BaseController, ResultType } from '@api/common/responseResult';
 
-export class PostController extends Result {
+export class PostController extends BaseController {
   constructor(
     private authService: Authentication,
     private postsService: PostsServiceInterface,
-    private errorHandler: ErrorHandler
   ) {
     super();
   }
@@ -37,7 +35,7 @@ export class PostController extends Result {
         res.status(HttpStatusCode.Unauthorized).send(result);
       }
     } catch (err) {
-      this.errorHandler.logAndSendError(err as Error, res);
+      this.logAndSendError(err as Error, res);
     }
   }
 
@@ -50,7 +48,7 @@ export class PostController extends Result {
         .status(HttpStatusCode.Ok)
         .send(this.getResult<PostType[]>(postResult));
     } catch (err) {
-      this.errorHandler.logAndSendError(err as Error, res);
+      this.logAndSendError(err as Error, res);
     }
   }
 
@@ -65,7 +63,7 @@ export class PostController extends Result {
           .send(this.getResult<PostType[]>(postResult.slice(0, 10)));
       }
     } catch (err) {
-      this.errorHandler.logAndSendError(err as Error, res);
+      this.logAndSendError(err as Error, res);
     }
   }
 
@@ -82,7 +80,7 @@ export class PostController extends Result {
           .send(this.getResult<PostType[]>(postResult.slice(0, 10)));
       }
     } catch (err) {
-      this.errorHandler.logAndSendError(err as Error, res);
+      this.logAndSendError(err as Error, res);
     }
   }
 

@@ -8,4 +8,10 @@ export namespace Config {
       return process.env.AUTH_URL ?? 'http://localhost:3010';
     }
   }
+
+  export class MainUrl implements ProviderUrl {
+    getUrl() {
+      return process.env.MAIN_URL ?? 'http://localhost:3000';
+    }
+  }
 }

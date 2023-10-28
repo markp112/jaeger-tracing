@@ -5,29 +5,14 @@ import { HttpStatusCode } from 'axios';
 import { Authentication } from '@core/repository/auth/auth.repository';
 import { UserPermission } from '@core/services/models/auth/auth.model';
 import { PostsServiceInterface } from '@core/services/posts/posts.service';
+import { BaseController } from '@api/common/responseResult';
 
-type Result<T> = {
-  count: number;
-  data: T;
-};
-
-const ERROR_MESSAGE = 'request failed';
-
-export class PostsController {
+export class PostsController extends BaseController {
   constructor(
     private authService: Authentication,
     private postsService: PostsServiceInterface
-  ) {}
-
-  private getResult<T>(data: T): Result<T> {
-    let records = 1;
-    if (Array.isArray(data)) {
-      records = data.length;
-    }
-    return {
-      count: records,
-      data,
-    };
+  ) {
+    super();
   }
 
   @traceRequest('/posts/:userId/:permission')
@@ -49,24 +34,18 @@ export class PostsController {
       }
       res.status(HttpStatusCode.NotFound).send();
     } catch (err) {
-      logger.error(err);
-      res
-        .status(HttpStatusCode.InternalServerError)
-        .send(this.getResult<string>(ERROR_MESSAGE));
+      this.logAndSendError(err as Error, res);
     }
   }
 
   @traceRequest('/posts')
   async getAllPosts(req: Request, res: Response): Promise<void> {
-    logger.info(`${req.originalUrl} - res called`);
+    logger.info(`${req.originalUrl} - called`);
     try {
       const posts = await this.postsService.getAllPosts();
       res.status(HttpStatusCode.Ok).send(this.getResult(posts));
     } catch (err) {
-      logger.error(err);
-      res
-        .status(HttpStatusCode.InternalServerError)
-        .send(this.getResult<string>(ERROR_MESSAGE));
+      this.logAndSendError(err as Error, res);
     }
   }
 }

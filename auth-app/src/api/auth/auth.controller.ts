@@ -1,36 +1,18 @@
 import { Request, Response } from 'express';
 import { traceRequest } from '@api/tracing/decorators';
 import { logger } from '@logger/logger';
-import { PrismaClient } from '.prisma/client';
 import { UserPermission, UserType } from '@core/models/auth/auth.model';
-import { AuthRepository } from '@core/repositories/auth/auth.repository';
 import { HttpStatusCode } from 'axios';
-import { AuthService } from '@core/services/auth/auth.service';
+import { AuthServiceInterface } from '@core/services/auth/auth.service';
+import { BaseController } from '@api/common/responseResult';
 
-type Result<T> = {
-  count: number;
-  data: T;
-};
-
-export class AuthApi {
-  private static prismaClient = new PrismaClient();
-  private static authService = new AuthService(
-    new AuthRepository(this.prismaClient)
-  );
-
-  private static getResult<T>(data: T): Result<T> {
-    let records = 1;
-    if (Array.isArray(data)) {
-      records = data.length;
-    }
-    return {
-      count: records,
-      data,
-    };
-  }
+export class AuthController extends BaseController{
+  constructor(private authService: AuthServiceInterface) {
+        super();
+      }
 
   @traceRequest('/user/:name')
-  static async getUser(req: Request, res: Response): Promise<void> {
+  async getUser(req: Request, res: Response): Promise<void> {
     logger.info(`${req.originalUrl} - called`);
     try {
       const name = req.params.name;
@@ -41,13 +23,12 @@ export class AuthApi {
       }
       res.status(HttpStatusCode.NotFound).send();
     } catch (err) {
-      const error = JSON.stringify(err);
-      res.status(HttpStatusCode.InternalServerError).send(error);
+      this.logAndSendError(err as Error, res);
     }
   }
 
   @traceRequest('/user/:id/permissions/:permission')
-  static async getUserPermission(req: Request, res: Response): Promise<void> {
+  async getUserPermission(req: Request, res: Response): Promise<void> {
     logger.info(`${req.originalUrl} - called`);
     try {
       const permissionRequested: UserPermission = {
@@ -60,8 +41,8 @@ export class AuthApi {
       const result = this.getResult<UserPermission>(userPermission);
       res.status(HttpStatusCode.Ok).send(result);
     } catch (err) {
-      const error = JSON.stringify(err);
-      res.status(HttpStatusCode.InternalServerError).send(error);
+      this.logAndSendError(err as Error, res);
     }
   }
+
 }

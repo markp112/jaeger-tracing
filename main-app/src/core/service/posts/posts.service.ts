@@ -2,7 +2,6 @@ import { logger } from '@logger/logger';
 import { PostType } from '@model/posts/posts.model';
 import type { PostsInterface } from '@repository/posts/posts.repository';
 import { trace } from '@opentelemetry/api';
-import { Span } from '@opentelemetry/sdk-trace-base';
 import { UserPermission } from '@model/auth/auth.model';
 import { captureSpan } from '@api/decorators/tracing/tracing.decorator';
 

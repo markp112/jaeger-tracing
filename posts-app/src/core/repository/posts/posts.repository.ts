@@ -29,7 +29,6 @@ export class PostsRepository implements PostRepo {
   }
 
   async getAllPosts(): Promise<PostType[]> {
-    logger.info('Post repository getAllPosts called');
     try {
       return await this.client.post.findMany();
     } catch (err) {

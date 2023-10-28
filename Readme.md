@@ -25,12 +25,15 @@ The database connection is confuigured via the environment variable 'DATABASE_UR
 ### Local Setup
 If using a Postgre instance hosted on Openshift, to connect to the database the following steps need to be followed:
 Open terminal in the IDE:
-1) set an environment variable for the DATABASE_URL, this needs to look for the database on localhost in the format of: DATABASE_URL=postgresql://<User>:<Password>@localhost:5432/auth?schema=public
+1) set an environment variable for the DATABASE_URL, this needs to look for the database on localhost in the format of: 
+   DATABASE_URL=postgresql://<User>:<Password>@localhost:5432/auth?schema=public
 2) login into the oc console using your oc credentials which are obtained from the oc UI
 3) For localhost to reach the postgres database on OpenShift we need to forward the port to the OpenShift pod running postgres, this can be located via the OpenShift UI and use this in the following command: oc port-foward <podname> 5432 & 
    1) The "&" is important here as we want the oc command to run in the background.
+4) Add port forwarding for Jaeger if we need to capture the traces: oc port-forward <Jaeger pod name> 14268 & 
+5) To forward requests to Jaeger each service needs its local environment variable for Jaeger_URL to be set to http://localhost:14268/api/traces
+6) We can now build our application locally and start it
 
-4) We can now build our application locally and start it
 ### OpenShift
 
 * Login into the Openshift UI as the kubeAdmin and add the following Operator 'Jaeger' provided by Redhat, Accept the defaults and create the Operator, this will take a few minutes to create.

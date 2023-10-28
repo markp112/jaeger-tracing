@@ -30,8 +30,8 @@ describe('PostsService', () => {
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBeGreaterThan(0);
       expect(result[0]).toHaveProperty('id');
-      expect(result[0]).toHaveProperty('title');
-      expect(result[0]).toHaveProperty('content');
+      expect(result[0]).toHaveProperty('date');
+      expect(result[0]).toHaveProperty('post');
     });
 
     // fetchAllPosts method returns an array of PostType objects
@@ -41,8 +41,8 @@ describe('PostsService', () => {
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBeGreaterThan(0);
       expect(result[0]).toHaveProperty('id');
-      expect(result[0]).toHaveProperty('title');
-      expect(result[0]).toHaveProperty('content');
+      expect(result[0]).toHaveProperty('date');
+      expect(result[0]).toHaveProperty('post');
     });
 
     // fetchPostsOne method returns an array of PostType objects when given a valid path

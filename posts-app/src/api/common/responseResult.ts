@@ -20,6 +20,7 @@ export abstract class BaseController {
       data,
     };
   }
+
   logAndSendError(error: Error, res: Response): void {
     logger.error(error);
     res
