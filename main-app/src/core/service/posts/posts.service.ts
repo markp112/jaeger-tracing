@@ -4,6 +4,7 @@ import type { PostsInterface } from '@repository/posts/posts.repository';
 import { trace } from '@opentelemetry/api';
 import { UserPermission } from '@model/auth/auth.model';
 import { captureSpan } from '@api/decorators/tracing/tracing.decorator';
+import { userInfo } from 'os';
 
 export interface PostsServiceInterface {
   fetchPosts(permission: UserPermission): Promise<PostType[]>;
@@ -15,7 +16,17 @@ captureSpan('PostService');
 export class PostsService {
   constructor(private repository: PostsInterface) {}
 
+  private validate(permission: UserPermission) {
+    if (permission.userId === '' || permission.userId === null || permission.userId === undefined) {
+      throw new Error ('User Id cannot be empty or null / undefined');
+    }
+    if (permission.permission  === '' || permission.permission === null || permission.permission === undefined) {
+      throw new Error ('User Id cannot be empty or null / undefined');
+    }
+  }
+
   async fetchPosts(permission: UserPermission): Promise<PostType[]> {
+    this.validate(permission);
     const currentSpan = trace.getActiveSpan();
     try {
       if (currentSpan) {
