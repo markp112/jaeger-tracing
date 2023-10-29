@@ -60,7 +60,7 @@ export class PostController extends BaseController {
       if (postResult) {
         res
           .status(HttpStatusCode.Ok)
-          .send(this.getResult<PostType[]>(postResult.slice(0, 10)));
+          .send(this.getResult<PostType[]>(postResult));
       }
     } catch (err) {
       this.logAndSendError(err as Error, res);

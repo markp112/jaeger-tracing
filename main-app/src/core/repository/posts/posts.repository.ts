@@ -26,9 +26,10 @@ class PostsRepository implements PostsInterface {
       logger.info(
         `repository: posts - baseUrl = ${
           this.baseUrl
-        } and route = ${route}, and axios baseUrl -> ${this.axiosClient.getUri()}`
+        } and route = ${route}`
       );
       const result = await this.axiosClient.get(route);
+      console.log('---> Repo: ', result.data);
       return result.data.data as PostType[];
     } catch (error) {
       logger.error(`Error from posts call -> ${error}`);

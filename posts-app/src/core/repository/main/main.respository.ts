@@ -16,8 +16,7 @@ export class MainRepository implements MainRepositoryInterface {
   }
 
   async fetch<T>(url: string): Promise<T> {
-      const result = await this.axiosClient.get(url);
-      logger.info(`---->${result.data}`)
-      return result.data as T;
+    const result = await this.axiosClient.get(url);
+    return result.data.data as T;
   }
 }

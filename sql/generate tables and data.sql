@@ -1,9 +1,8 @@
 
-create table "Users" (
+create table "User" (
 	id UUID primary key,
 	username varchar(128)
 );
-
 
 create table "UserPermissions" (
 	userId UUID,
@@ -39,6 +38,6 @@ values ('e488358d-6d2e-4b30-96af-65e772342d82', 'e488358d-6d2e-4b30-96af-65e7723
 insert into "Post" (id, "userId", post, date)
 values ('e488358d-6d2e-4b30-96af-65a772343e52', 'e488358d-6d2e-4b30-96af-65e772342d82', 'my second, post', now());
 
-update "Post" set "userId" = '1' where "Post"."userId" is null;
+
 
 

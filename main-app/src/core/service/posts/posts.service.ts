@@ -4,7 +4,7 @@ import type { PostsInterface } from '@repository/posts/posts.repository';
 import { trace } from '@opentelemetry/api';
 import { UserPermission } from '@model/auth/auth.model';
 import { captureSpan } from '@api/decorators/tracing/tracing.decorator';
-import { userInfo } from 'os';
+import { isNullUndefinedOrEmpty } from '../common/common';
 
 export interface PostsServiceInterface {
   fetchPosts(permission: UserPermission): Promise<PostType[]>;
@@ -17,11 +17,11 @@ export class PostsService {
   constructor(private repository: PostsInterface) {}
 
   private validate(permission: UserPermission) {
-    if (permission.userId === '' || permission.userId === null || permission.userId === undefined) {
+    if (isNullUndefinedOrEmpty(permission.userId)) {
       throw new Error ('User Id cannot be empty or null / undefined');
     }
-    if (permission.permission  === '' || permission.permission === null || permission.permission === undefined) {
-      throw new Error ('User Id cannot be empty or null / undefined');
+    if (isNullUndefinedOrEmpty(permission.permission)) {
+      throw new Error ('Permission cannot be empty or null / undefined');
     }
   }
 
