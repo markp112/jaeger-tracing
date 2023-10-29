@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["tracing"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String           @id
+  username       String
+  UserPermission UserPermission[]
+  posts          Post[]
+}
+
+model UserPermission {
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String     @unique
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId String     @unique
+}
+
+model Permission {
+  id             String           @id
+  permission     String
+  UserPermission UserPermission[]
+}
+
+model Post {
+  id     String   @id
+  post   String
+  date   DateTime
+  User   User     @relation(fields: [userId], references: [id])
+  userId String
+}

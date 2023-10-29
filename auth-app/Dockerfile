@@ -14,7 +14,7 @@ RUN npm ci
 COPY prisma ./prisma/
 COPY . .
 
-ARG URL=postgresql://USER:PASSWORD@postgresql:5432/auth?schema=public
+ARG DATABASE_URL=postgresql://USER:PASSWORD@postgresql:5432/auth?schema=public
 
 RUN echo ${URL}
 
@@ -25,7 +25,8 @@ RUN echo ${URL} > ./.env
 RUN npx prisma generate
 
 RUN npm run build
-
+# RUN npx prisma migrate save --name initial --experimental
+# RUN npx prisma migrate up --experimental
 
 EXPOSE 3010
 

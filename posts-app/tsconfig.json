@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "baseUrl": "./src",
+    "rootDir": "./src",
+    "paths": {
+      "@api/*": ["api/*"],
+      "@database/*": ["database/*"],
+      "@logger/*": ["logger/*"],
+      "@core/*": ["core/*"],
+      "@model/*": ["core/models/*"],
+      "@repository/*": ["core/repositories/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
+  "lib": ["es2015"]
+}

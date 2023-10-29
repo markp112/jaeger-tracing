@@ -1,27 +1,70 @@
+import { logger } from '@logger/logger';
 import { tracer } from '../../../tracing';
+import { HttpStatusCode } from 'axios';
+import { Span } from '@opentelemetry/api';
 
 function traceRequest(endPoint: string) {
   return function (
-    target: any,
-    prop: string,
-    descriptor: TypedPropertyDescriptor<Function>
+    target: Object,
+    prop: string | symbol,
+    descriptor: PropertyDescriptor
   ) {
     let method = descriptor.value;
-    descriptor.value = async function () {
-      return await tracer.startActiveSpan(endPoint, async (requestSpan) => {
-        try {
-          const returnValue = await method.apply(this, arguments);
-          return returnValue;
-        } catch (e) {
-          requestSpan.setAttribute('http.status', 500);
-          requestSpan.recordException(`${(e as Error).message}`);
-          throw e;
-        } finally {
-          requestSpan.end();
+    descriptor.value = async function (...args: any[]) {
+      return await tracer.startActiveSpan(
+        endPoint,
+        async (requestSpan: Span) => {
+          try {
+            if (typeof method === 'function') {
+              const returnValue = await method.apply(this, args);
+              return returnValue;
+            }
+          } catch (e) {
+            logger.error(`Error logged from traceRequest -> ${e}`);
+            requestSpan.setAttribute(
+              'http.status',
+              HttpStatusCode.InternalServerError
+            );
+            requestSpan.recordException(`${(e as Error).message}`);
+          } finally {
+            requestSpan.end();
+          }
         }
-      });
+      );
     };
   };
 }
 
-export { traceRequest };
+function captureSpan(endPoint: string) {
+  return function (
+    target: Object,
+    prop: string | symbol,
+    descriptor: PropertyDescriptor
+  ) {
+    let method = descriptor.value;
+    descriptor.value = async function (...args: any[]) {
+      return await tracer.startActiveSpan(
+        endPoint,
+        async (requestSpan: Span) => {
+          try {
+            if (typeof method === 'function') {
+              const returnValue = await method.apply(this, args);
+              return returnValue;
+            }
+          } catch (e) {
+            logger.error(e);
+            requestSpan.setAttribute(
+              'http.status',
+              HttpStatusCode.InternalServerError
+            );
+            requestSpan.recordException(`${(e as Error).message}`);
+          } finally {
+            requestSpan.end();
+          }
+        }
+      );
+    };
+  };
+}
+
+export { traceRequest, captureSpan };

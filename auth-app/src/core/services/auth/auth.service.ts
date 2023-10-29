@@ -1,13 +1,24 @@
-import { Authentication } from '@repository/auth/auth.repository';
-import { Credential, UserType } from '@model/auth/auth.model';
+import { UserPermission, UserType } from '@model/auth/auth.model';
+import { Authentication } from '../repositories/auth/auth.repository';
 
-class AuthService {
+export interface AuthServiceInterface {
+  getUser(name: string): Promise<UserType | undefined>;
+  getUserPermission(userPermission: UserPermission): Promise<UserPermission>;
+}
+
+class AuthService implements AuthServiceInterface {
 
   constructor(private repository: Authentication) {}
 
-  async login(credentials: Credential, waitDelay: number): Promise<UserType> {
-    return await this.repository.login(credentials, waitDelay);
-  } 
+  async getUser(name: string): Promise<UserType | undefined> {
+    return await this.repository.getUser(name);
+  }
+
+  async getUserPermission(
+    userPermission: UserPermission
+  ): Promise<UserPermission> {
+    return await this.repository.getUserPermission(userPermission);
+  }
 }
 
 export { AuthService };

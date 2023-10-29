@@ -12,12 +12,27 @@ datasource db {
 }
 
 model User {
-  id       String @id
-  username String
+  id             String            @id
+  username       String
+  UserPermission UserPermissions[]
+}
+
+model UserPermissions {
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String     @unique
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId String     @unique
+}
+
+model Permission {
+  id             String            @id
+  permission     String
+  UserPermission UserPermissions[]
 }
 
 model Post {
-  id   String   @id
-  post String
-  date DateTime
+  id     String   @id
+  userId String
+  post   String
+  date   DateTime
 }

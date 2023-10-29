@@ -3,9 +3,8 @@ import express from 'express';
 import pinoHttp from 'pino-http';
 import { logger } from './logger/logger';
 import bodyParser from 'body-parser';
-import { authRouter } from './api/auth/auth';
-import { postsRouter } from '@api/posts/posts';
-// import { AppDataSource } from './typeorm/dataSource/dataSource';
+import { authRouter } from './api/auth/auth.api';
+import { HttpStatusCode } from 'axios';
 
 const app = express();
 app.use(
@@ -15,23 +14,24 @@ app.use(
   })
 );
 
-// AppDataSource;
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 app.use(authRouter);
-app.use(postsRouter);
 
 app.get('/', async (req, res) => {
   await tracer.startActiveSpan('Get /', async (requestSpan) => {
     try {
       logger.info('app running');
-      requestSpan.setAttribute('http.status', 200);
+      requestSpan.setAttribute('http.status', HttpStatusCode.Ok);
       res.send('Hello World!');
     } catch (e) {
-      requestSpan.setAttribute('http.status', 500);
-      res.status(500).json({ error: 500, details: e });
+      requestSpan.setAttribute(
+        'http.status',
+        HttpStatusCode.InternalServerError
+      );
+      res
+        .status(HttpStatusCode.InternalServerError)
+        .json({ error: HttpStatusCode.InternalServerError, details: e });
     } finally {
       requestSpan.end();
     }
@@ -40,9 +40,9 @@ app.get('/', async (req, res) => {
 
 app.use((req, res) => {
   logger.error(res.statusMessage);
-  return res.status(404).json({
+  return res.status(HttpStatusCode.NotFound).json({
     message: 'Route not found',
-    status: '404',
+    status: `${HttpStatusCode.NotFound}`,
   });
 });
 

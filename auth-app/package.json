@@ -16,6 +16,7 @@
     "ext": "ts, js"
   },
   "scripts": {
+    "start": "node ./dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/server.ts | npx pino-pretty",
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist"
@@ -40,6 +41,7 @@
     "@opentelemetry/semantic-conventions": "1.15.1",
     "@prisma/client": "^5.1.1",
     "@prisma/instrumentation": "5.1.0",
+    "@types/axios": "^0.14.0",
     "axios": "^1.5.1",
     "body-parser": "^1.20.2",
     "dotenv": "^16.3.1",

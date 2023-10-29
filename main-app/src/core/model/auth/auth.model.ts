@@ -1,11 +1,11 @@
-interface Credential {
-  username: string;
-  password: string;
-};
-
 interface UserType {
   id: string;
   username: string;
 }
 
-export { Credential, UserType };
+interface UserPermission {
+  userId: string;
+  permission: string;
+  isGranted?: boolean;
+}
+export type { UserPermission, UserType };

@@ -1,10 +1,8 @@
 import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 import {
-  SimpleSpanProcessor,
   BatchSpanProcessor,
   TraceIdRatioBasedSampler,
-  //   EXPORTER_FACTORY,
 } from '@opentelemetry/sdk-trace-base';
 import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
 import {
@@ -40,11 +38,7 @@ export function initializeTracing(
     }),
   });
 
-  // if (process.env.NODE_ENV === 'production') {
-    provider.addSpanProcessor(new BatchSpanProcessor(jaegerExporter));
-  // } else {
-    // provider.addSpanProcessor(new SimpleSpanProcessor(jaegerExporter));
-  // }
+  provider.addSpanProcessor(new BatchSpanProcessor(jaegerExporter));
 
   registerInstrumentations({
     instrumentations: [
@@ -58,5 +52,4 @@ export function initializeTracing(
   provider.register();
 
   return trace.getTracer(serviceName);
-  // return provider.getTracer(serviceName);
 }
